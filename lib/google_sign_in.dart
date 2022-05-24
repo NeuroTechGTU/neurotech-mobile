@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +61,13 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
           } else if (snapshot.hasData) {
             user = FirebaseAuth.instance.currentUser!;
             print("HAS DATAaaa");
-            print(user?.displayName);
+            print(user?.email);
+            var users = FirebaseFirestore.instance.collection('Users');
+            //.where('email', isEqualTo: user!.email);
+            //.snapshots()
+            //.first;
+            //.forEach((element) {print(element.docs.first.data().)});
+
             return Scaffold(
               appBar: AppBar(
                   // Here we take the value from the MyHomePage object that was created by
@@ -100,7 +109,127 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
                   mainAxisAlignment: MainAxisAlignment.center,
 
                   children: <Widget>[
-                    MyCustomForm(),
+                    FutureBuilder<DocumentSnapshot>(
+                      future: users.doc(user?.email).get(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return Text("Something went wrong");
+                        }
+
+                        if (snapshot.hasData && !snapshot.data!.exists) {
+                          //addMessageToGuestBook("message");
+                          // burda kullanıcının verileri alınıp database'e kaydedilmeli
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SaveUser()),
+                          );
+                          return Text("Document does not exist");
+                        }
+
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          Map<String, dynamic> data =
+                              snapshot.data!.data() as Map<String, dynamic>;
+                          return Text(
+                              "Full Name: ${data['email']} ${data['name']}");
+                        }
+
+                        return Text("loading");
+                      },
+                    ),
+                    /*
+                    FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      future:
+                          snapshotsUser, // a previously-obtained Future<String> or null
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                              snapshot) {
+                        List<Widget> children;
+                        String name = "-", email = "-";
+                        if (snapshot.hasData) {
+                          bool found = snapshot.data?.size != 0;
+                          if (found) {
+                            print("id: ${snapshot.data?.docs?.first?.id}");
+                            snapshot.data!.docs
+                                .map((DocumentSnapshot document) {
+                              Map<String, dynamic> data =
+                                  document.data()! as Map<String, dynamic>;
+                              name = data['name'];
+                              email = data['email'];
+                            });
+                          }
+
+                          children = (found)
+                              ? <Widget>[
+                                  const Icon(
+                                    Icons.check_circle_outline,
+                                    color: Colors.green,
+                                    size: 60,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 16),
+                                    child: Text('$name $email'
+                                        //'Bu hesap daha once kaydoldu ${snapshot.data?.docs.reference.get().then((value) => value.data().toString())}'),
+                                        //'Result: ${snapshot.data?.docs?.first.data().length}'),
+                                        ),
+                                  )
+                                  /*ListView(
+                                      children: snapshot.data!.docs
+                                          .map((DocumentSnapshot document) {
+                                    Map<String, dynamic> data = document.data()!
+                                        as Map<String, dynamic>;
+                                    return ListTile(
+                                      title: Text(data['email']),
+                                      subtitle: Text(data['name']),
+                                    );
+                                  }).toList())*/
+                                ]
+                              : <Widget>[
+                                  const Icon(
+                                    Icons.error_outline,
+                                    color: Colors.red,
+                                    size: 60,
+                                  ),
+                                  Text(
+                                      "Bu hesap daha once kaydolmadı,\n burda kayıt olma ekranı bastırılmalı")
+                                ];
+                        } else if (snapshot.hasError) {
+                          children = <Widget>[
+                            const Icon(
+                              Icons.error_outline,
+                              color: Colors.red,
+                              size: 60,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16),
+                              child: Text('Error: ${snapshot.error}'),
+                            )
+                          ];
+                        } else {
+                          children = const <Widget>[
+                            SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: CircularProgressIndicator(),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 16),
+                              child: Text('Awaiting result...'),
+                            )
+                          ];
+                        }
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: children,
+                          ),
+                        );
+                      },
+                    ),
+                    */
+
+                    //MyCustomForm(),
                     /*TextButton(
                       style: ButtonStyle(
                         overlayColor: MaterialStateProperty.resolveWith<Color?>(
@@ -252,11 +381,67 @@ class MyCustomFormState extends State<MyCustomForm> {
                     const SnackBar(content: Text('Processing Data')),
                   );
                 }
+                //addMessageToGuestBook("selamun aleykum firebase");
               },
               child: const Text('Submit'),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+Future<void> saveUser(String cinsiyet, int yas, bool duygusalMisin,
+    String filmIzlemeAliskanligi) {
+  /*if (_loginState != ApplicationLoginState.loggedIn) {
+    throw Exception('Must be logged in');
+  }*/
+
+  return FirebaseFirestore.instance
+      .collection('Users')
+      .doc(user?.email)
+      .set(<String, dynamic>{
+    'name': FirebaseAuth.instance.currentUser!.displayName,
+    'email': FirebaseAuth.instance.currentUser!.email,
+    //'timestamp': DateTime.now().millisecondsSinceEpoch,
+    'userId': FirebaseAuth.instance.currentUser!.uid,
+
+    'cinsiyet': cinsiyet,
+    'yas': yas,
+    'duygusalMisin': duygusalMisin,
+    'filmIzlemeAliskanligi': filmIzlemeAliskanligi
+  });
+}
+
+// bu class kullanıcının kayıt olma ekranı
+// kaydet tusuna basıldıgında
+class SaveUser extends StatelessWidget {
+  const SaveUser({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // bu veriler alincak. Save user fonksıyonuna bunlar gonderılcek
+    String cinsiyet = "";
+    int yas;
+    bool duygusalMisin;
+    String filmIzlemeAliskanligi = "";
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Kayıt Ol'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            cinsiyet = "Erkek";
+            yas = 20;
+            duygusalMisin = true;
+            filmIzlemeAliskanligi = "Sık";
+            saveUser(cinsiyet, yas, duygusalMisin, filmIzlemeAliskanligi);
+            // Navigate back to first route when tapped.
+          },
+          child: const Text('Go back!'),
+        ),
       ),
     );
   }

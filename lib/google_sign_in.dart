@@ -120,15 +120,31 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
                         if (snapshot.hasData && !snapshot.data!.exists) {
                           //addMessageToGuestBook("message");
                           // burda kullanıcının verileri alınıp database'e kaydedilmeli
-                          Navigator.push(
+                          // addPostFrameCallback eklemeyince sıkıntı cıkardı:
+                          // https://stackoverflow.com/questions/47592301/setstate-or-markneedsbuild-called-during-build
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const SaveUser()),
+                            );
+                          });
+                          /*Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const SaveUser()),
-                          );
+                          );*/
                           return Text("Document does not exist");
                         }
 
                         if (snapshot.connectionState == ConnectionState.done) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Anasayfa()),
+                            );
+                          });
                           Map<String, dynamic> data =
                               snapshot.data!.data() as Map<String, dynamic>;
                           return Text(
@@ -393,7 +409,7 @@ class MyCustomFormState extends State<MyCustomForm> {
 }
 
 Future<void> saveUser(String cinsiyet, int yas, bool duygusalMisin,
-    String filmIzlemeAliskanligi) {
+    String filmIzlemeAliskanligi) async {
   /*if (_loginState != ApplicationLoginState.loggedIn) {
     throw Exception('Must be logged in');
   }*/
@@ -428,6 +444,8 @@ class SaveUser extends StatelessWidget {
     String filmIzlemeAliskanligi = "";
     return Scaffold(
       appBar: AppBar(
+        // go back butonu kaldirma
+        automaticallyImplyLeading: false,
         title: const Text('Kayıt Ol'),
       ),
       body: Center(
@@ -438,11 +456,315 @@ class SaveUser extends StatelessWidget {
             duygusalMisin = true;
             filmIzlemeAliskanligi = "Sık";
             saveUser(cinsiyet, yas, duygusalMisin, filmIzlemeAliskanligi);
+            // burda ana sayfaya gecebiliriz
+            //Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Anasayfa()),
+            );
             // Navigate back to first route when tapped.
           },
-          child: const Text('Go back!'),
+          child: const Text('Kaydet'),
         ),
       ),
     );
   }
+}
+
+class Anasayfa extends StatefulWidget {
+  @override
+  State<Anasayfa> createState() => _Anasayfa();
+}
+
+class _Anasayfa extends State<Anasayfa> {
+  bool check = false;
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+          body: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+                child: CircularProgressIndicator.adaptive(
+              backgroundColor: Color(0xff06D6A0),
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.cyan),
+            ));
+          } else if (snapshot.hasData) {
+            user = FirebaseAuth.instance.currentUser!;
+            //print("HAS DATAaaa");
+            //print(user?.email);
+            var users = FirebaseFirestore.instance.collection('Users');
+            //.where('email', isEqualTo: user!.email);
+            //.snapshots()
+            //.first;
+            //.forEach((element) {print(element.docs.first.data().)});
+
+            return Scaffold(
+              appBar: AppBar(
+                  automaticallyImplyLeading: false,
+                  // Here we take the value from the MyHomePage object that was created by
+                  // the App.build method, and use it to set our appbar title.
+                  title: Text("Neurotech"),
+                  actions: <Widget>[
+                    TextButton(
+                      style: TextButton.styleFrom(
+                          primary: Theme.of(context).colorScheme.onPrimary),
+                      child: Text("Logout"),
+                      //icon: const Icon(Icons.add_alert),
+                      //tooltip: 'Show Snackbar',
+                      onPressed: () {
+                        final provider = Provider.of<GoogleSignInProvider>(
+                            context,
+                            listen: false);
+                        provider.logout();
+                      },
+                    )
+                  ]),
+              body: Center(
+                // Center is a layout widget. It takes a single child and positions it
+                // in the middle of the parent.
+                child: Column(
+                  // Column is also a layout widget. It takes a list of children and
+                  // arranges them vertically. By default, it sizes itself to fit its
+                  // children horizontally, and tries to be as tall as its parent.
+                  //
+                  // Invoke "debug painting" (press "p" in the console, choose the
+                  // "Toggle Debug Paint" action from the Flutter Inspector in Android
+                  // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+                  // to see the wireframe for each widget.
+                  //
+                  // Column has various properties to control how it sizes itself and
+                  // how it positions its children. Here we use mainAxisAlignment to
+                  // center the children vertically; the main axis here is the vertical
+                  // axis because Columns are vertical (the cross axis would be
+                  // horizontal).
+                  mainAxisAlignment: MainAxisAlignment.center,
+
+                  children: <Widget>[
+                    FutureBuilder<DocumentSnapshot>(
+                      future: users.doc(user?.email).get(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return Text("Something went wrong");
+                        }
+
+                        if (snapshot.hasData && !snapshot.data!.exists) {
+                          //addMessageToGuestBook("message");
+                          // burda kullanıcının verileri alınıp database'e kaydedilmeli
+                          // addPostFrameCallback eklemeyince sıkıntı cıkardı:
+                          // https://stackoverflow.com/questions/47592301/setstate-or-markneedsbuild-called-during-build
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const SaveUser()),
+                            );
+                          });
+                          /*Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SaveUser()),
+                          );*/
+                          return Text("Document does not exist");
+                        }
+
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          Map<String, dynamic> data =
+                              snapshot.data!.data() as Map<String, dynamic>;
+                          return Text(
+                              "Email: ${data['email']} ${data['name']}");
+                        }
+
+                        return Text("loading");
+                      },
+                    ),
+                    /*
+                    FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      future:
+                          snapshotsUser, // a previously-obtained Future<String> or null
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                              snapshot) {
+                        List<Widget> children;
+                        String name = "-", email = "-";
+                        if (snapshot.hasData) {
+                          bool found = snapshot.data?.size != 0;
+                          if (found) {
+                            print("id: ${snapshot.data?.docs?.first?.id}");
+                            snapshot.data!.docs
+                                .map((DocumentSnapshot document) {
+                              Map<String, dynamic> data =
+                                  document.data()! as Map<String, dynamic>;
+                              name = data['name'];
+                              email = data['email'];
+                            });
+                          }
+
+                          children = (found)
+                              ? <Widget>[
+                                  const Icon(
+                                    Icons.check_circle_outline,
+                                    color: Colors.green,
+                                    size: 60,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 16),
+                                    child: Text('$name $email'
+                                        //'Bu hesap daha once kaydoldu ${snapshot.data?.docs.reference.get().then((value) => value.data().toString())}'),
+                                        //'Result: ${snapshot.data?.docs?.first.data().length}'),
+                                        ),
+                                  )
+                                  /*ListView(
+                                      children: snapshot.data!.docs
+                                          .map((DocumentSnapshot document) {
+                                    Map<String, dynamic> data = document.data()!
+                                        as Map<String, dynamic>;
+                                    return ListTile(
+                                      title: Text(data['email']),
+                                      subtitle: Text(data['name']),
+                                    );
+                                  }).toList())*/
+                                ]
+                              : <Widget>[
+                                  const Icon(
+                                    Icons.error_outline,
+                                    color: Colors.red,
+                                    size: 60,
+                                  ),
+                                  Text(
+                                      "Bu hesap daha once kaydolmadı,\n burda kayıt olma ekranı bastırılmalı")
+                                ];
+                        } else if (snapshot.hasError) {
+                          children = <Widget>[
+                            const Icon(
+                              Icons.error_outline,
+                              color: Colors.red,
+                              size: 60,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16),
+                              child: Text('Error: ${snapshot.error}'),
+                            )
+                          ];
+                        } else {
+                          children = const <Widget>[
+                            SizedBox(
+                              width: 60,
+                              height: 60,
+                              child: CircularProgressIndicator(),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 16),
+                              child: Text('Awaiting result...'),
+                            )
+                          ];
+                        }
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: children,
+                          ),
+                        );
+                      },
+                    ),
+                    */
+
+                    //MyCustomForm(),
+                    /*TextButton(
+                      style: ButtonStyle(
+                        overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                            (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.focused))
+                            return Colors.red;
+                          return null; // Defer to the widget's default.
+                        }),
+                      ),
+                      onPressed: () {
+                        final provider = Provider.of<GoogleSignInProvider>(
+                            context,
+                            listen: false);
+                        provider.googleLogin();
+                      },
+                      child: Text('Sign up with Google'),
+                    ),*/
+                  ],
+                ),
+              ),
+            );
+            /*return ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24)),
+                primary: Colors.white,
+                onPrimary: Colors.red,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+                child: Row(
+                  // Replace with a Row for horizontal icon + text
+                  children: <Widget>[
+                    SizedBox(
+                      height: 15,
+                      width: 14,
+                    ),
+                    //FaIcon(FontAwesomeIcons.google, color: Colors.red),
+                    Text(
+                      "Logout",
+                      /*style: GoogleFonts.lemon(
+                                  color: Colors.red, fontSize: 16),*/
+                    ),
+                  ],
+                ),
+              ),
+              onPressed: () {
+                final provider =
+                    Provider.of<GoogleSignInProvider>(context, listen: false);
+                provider.logout();
+              },
+            );*/ /*
+              FutureBuilder<DocumentSnapshot>(
+                future: FirebaseFirestore.instance
+                    .collection('Users')
+                    .doc(user!.email)
+                    .get(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<DocumentSnapshot> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return Text('Loading....');
+                    default:
+                      if (snapshot.hasError)
+                        return Text('Error: ${snapshot.error}');
+                      else {
+                        if (snapshot.data!.exists) {
+                          check = false;
+                        } else {
+                          check = true;
+                        }
+                      }
+                      if (check) {
+                        return MainPage2();
+                      } else {
+                        check21 = true;
+                        Map<String, dynamic> data =
+                            snapshot.data!.data() as Map<String, dynamic>;
+
+                        checksaticioralici = data['saticiMi'];
+
+                        return MyApp1();
+                      }
+                  }
+                }
+                );*/ // giris yapılmış
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Something went wrong!'));
+          } else {
+            return MainPage1();
+          } //MainPage1();
+        },
+      )
+          //body: MainPage(),
+          );
 }

@@ -254,6 +254,29 @@ Future<void> saveUser(String cinsiyet, int yas, bool duygusalMisin,
   });
 }
 
+Future<void> saveTestResult(String cinsiyet, int yas, bool duygusalMisin,
+    String filmIzlemeAliskanligi, String film, String sonuc) async {
+  /*if (_loginState != ApplicationLoginState.loggedIn) {
+    throw Exception('Must be logged in');
+  }*/
+
+  return FirebaseFirestore.instance
+      .collection('Tests')
+      .doc()
+      .set(<String, dynamic>{
+    'name': FirebaseAuth.instance.currentUser!.displayName,
+    'email': FirebaseAuth.instance.currentUser!.email,
+    //'timestamp': DateTime.now().millisecondsSinceEpoch,
+    'userId': FirebaseAuth.instance.currentUser!.uid,
+    'cinsiyet': cinsiyet,
+    'yas': yas,
+    'duygusalMisin': duygusalMisin,
+    'filmIzlemeAliskanligi': filmIzlemeAliskanligi,
+    'testEdilenfilm': film,
+    'duygu': sonuc
+  });
+}
+
 // bu class kullanıcının kayıt olma ekranı
 // kaydet tusuna basıldıgında
 class SaveUser extends StatelessWidget {
@@ -268,10 +291,24 @@ class SaveUser extends StatelessWidget {
     String filmIzlemeAliskanligi = "";
     return Scaffold(
       appBar: AppBar(
-        // go back butonu kaldirma
-        automaticallyImplyLeading: false,
-        title: const Text('Kayıt Ol'),
-      ),
+          // go back butonu kaldirma
+          automaticallyImplyLeading: false,
+          title: const Text('Kayıt Ol'),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                  primary: Theme.of(context).colorScheme.onPrimary),
+              child: Text("Logout"),
+              //icon: const Icon(Icons.add_alert),
+              //tooltip: 'Show Snackbar',
+              onPressed: () {
+                final provider =
+                    Provider.of<GoogleSignInProvider>(context, listen: false);
+                provider.logout();
+                Navigator.pop(context);
+              },
+            )
+          ]),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
@@ -282,6 +319,7 @@ class SaveUser extends StatelessWidget {
             saveUser(cinsiyet, yas, duygusalMisin, filmIzlemeAliskanligi);
             // burda ana sayfaya gecebiliriz
             //Navigator.pop(context);
+            Navigator.pop(context); // kayıt olma sayfasını kaldır
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => Anasayfa()),
@@ -302,122 +340,77 @@ class Anasayfa extends StatefulWidget {
 
 class _Anasayfa extends State<Anasayfa> {
   bool check = false;
-
+  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
+      .collection('Tests')
+      .where('email', isEqualTo: user?.email)
+      .snapshots();
   @override
-  Widget build(BuildContext context) => Scaffold(
-          body: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-                child: CircularProgressIndicator.adaptive(
-              backgroundColor: Color(0xff06D6A0),
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.cyan),
-            ));
-          } else if (snapshot.hasData) {
-            user = FirebaseAuth.instance.currentUser!;
-            //print("HAS DATAaaa");
-            //print(user?.email);
-            var users = FirebaseFirestore.instance.collection('Users');
-            //.where('email', isEqualTo: user!.email);
-            //.snapshots()
-            //.first;
-            //.forEach((element) {print(element.docs.first.data().)});
+  Widget build(BuildContext context)
+      //saveTestResult("Erkek", 15, false, "nadir", "Kara Murat", "Mutluluk");
+      =>
+      Scaffold(
+          appBar: AppBar(
+              // Here we take the value from the MyHomePage object that was created by
+              // the App.build method, and use it to set our appbar title.
+              automaticallyImplyLeading: false,
+              title: Text("Neurotech"),
+              actions: <Widget>[
+                TextButton(
+                  style: TextButton.styleFrom(
+                      primary: Theme.of(context).colorScheme.onPrimary),
+                  child: Text("Logout"),
+                  //icon: const Icon(Icons.add_alert),
+                  //tooltip: 'Show Snackbar',
+                  onPressed: () {
+                    final provider = Provider.of<GoogleSignInProvider>(context,
+                        listen: false);
+                    provider.logout();
+                    Navigator.pop(context);
+                  },
+                )
+              ]),
+          body: Center(
+            child: Column(
+              children: [
+                StreamBuilder<QuerySnapshot>(
+                  stream: _usersStream,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Something went wrong');
+                    }
 
-            return Scaffold(
-              appBar: AppBar(
-                  automaticallyImplyLeading: false,
-                  // Here we take the value from the MyHomePage object that was created by
-                  // the App.build method, and use it to set our appbar title.
-                  title: Text("Neurotech"),
-                  actions: <Widget>[
-                    TextButton(
-                      style: TextButton.styleFrom(
-                          primary: Theme.of(context).colorScheme.onPrimary),
-                      child: Text("Logout"),
-                      //icon: const Icon(Icons.add_alert),
-                      //tooltip: 'Show Snackbar',
-                      onPressed: () {
-                        final provider = Provider.of<GoogleSignInProvider>(
-                            context,
-                            listen: false);
-                        provider.logout();
-                      },
-                    )
-                  ]),
-              body: Center(
-                // Center is a layout widget. It takes a single child and positions it
-                // in the middle of the parent.
-                child: Column(
-                  // Column is also a layout widget. It takes a list of children and
-                  // arranges them vertically. By default, it sizes itself to fit its
-                  // children horizontally, and tries to be as tall as its parent.
-                  //
-                  // Invoke "debug painting" (press "p" in the console, choose the
-                  // "Toggle Debug Paint" action from the Flutter Inspector in Android
-                  // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-                  // to see the wireframe for each widget.
-                  //
-                  // Column has various properties to control how it sizes itself and
-                  // how it positions its children. Here we use mainAxisAlignment to
-                  // center the children vertically; the main axis here is the vertical
-                  // axis because Columns are vertical (the cross axis would be
-                  // horizontal).
-                  mainAxisAlignment: MainAxisAlignment.center,
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Text("Loading");
+                    }
 
-                  children: <Widget>[
-                    FutureBuilder<DocumentSnapshot>(
-                      future: users.doc(user?.email).get(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<DocumentSnapshot> snapshot) {
-                        if (snapshot.hasError) {
-                          return Text("Something went wrong");
-                        }
-
-                        if (snapshot.hasData && !snapshot.data!.exists) {
-                          //addMessageToGuestBook("message");
-                          // burda kullanıcının verileri alınıp database'e kaydedilmeli
-                          // addPostFrameCallback eklemeyince sıkıntı cıkardı:
-                          // https://stackoverflow.com/questions/47592301/setstate-or-markneedsbuild-called-during-build
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SaveUser()),
-                            );
-                          });
-                          /*Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SaveUser()),
-                          );*/
-                          return Text("Document does not exist");
-                        }
-
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          Map<String, dynamic> data =
-                              snapshot.data!.data() as Map<String, dynamic>;
-                          return Text(
-                              "Email: ${data['email']} ${data['name']}");
-                        }
-
-                        return Text("loading");
-                      },
-                    ),
-
-                    //MyCustomForm(),
-                  ],
+                    return ListView(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      children:
+                          snapshot.data!.docs.map((DocumentSnapshot document) {
+                        Map<String, dynamic> data =
+                            document.data()! as Map<String, dynamic>;
+                        // listeleme yapmak için burdaki listtile'ı guncellemek yeterli
+                        return ListTile(
+                          title: Text("Film: " + data['testEdilenfilm']),
+                          leading: Text("Duygu:" + data['duygu']),
+                          trailing: Text("isim: " + data['name']),
+                          subtitle: Text("Yas:" + data['yas'].toString()),
+                        );
+                      }).toList(),
+                    );
+                  },
                 ),
-              ),
-            );
-            // giris yapılmış
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Something went wrong!'));
-          } else {
-            return MainPage1();
-          } //MainPage1();
-        },
-      )
-          //body: MainPage(),
-          );
+                ElevatedButton(
+                  onPressed: () {
+                    saveTestResult(
+                        "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");
+                    // Navigate back to first route when tapped.
+                  },
+                  child: const Text('Testi Bitir'),
+                )
+              ],
+            ),
+          ));
 }

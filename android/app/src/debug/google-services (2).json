@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "426233341295",
+    "project_id": "neurotech-a842f",
+    "storage_bucket": "neurotech-a842f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426233341295:android:33553a6ec69937c998349a",
+        "android_client_info": {
+          "package_name": "com.example.neurotech_ceng"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "426233341295-062h08u5r80tr8j8bmk8unqaq0fi3k7q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.neurotech_ceng",
+            "certificate_hash": "d6ad8b371ecfbe588ea0f110539f0e5aeacdf143"
+          }
+        },
+        {
+          "client_id": "426233341295-ab0mn19gco91jjb8ovh0hcdu8s9195a8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.neurotech_ceng",
+            "certificate_hash": "a9cc48e1992b06fdaf3ebd1bde0d9ed1fda86416"
+          }
+        },
+        {
+          "client_id": "426233341295-0a72g17ce783jq1m1r5kskuj38vqouub.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApgPMCB3-n2oJTr15IcrWIavkq3tSli9c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "426233341295-0a72g17ce783jq1m1r5kskuj38vqouub.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

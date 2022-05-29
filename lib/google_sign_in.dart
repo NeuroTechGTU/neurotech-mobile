@@ -129,6 +129,7 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
                             MaterialPageRoute(
                                 builder: (context) => const SaveUser()),
                           );*/
+
                           return Text("Document does not exist");
                         }
 
@@ -140,6 +141,7 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
                                   builder: (context) => Anasayfa()),
                             );
                           });
+
                           Map<String, dynamic> data =
                               snapshot.data!.data() as Map<String, dynamic>;
                           return Text(
@@ -159,6 +161,7 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Something went wrong!'));
           } else {
+
             return MainPage1();
           } //MainPage1();
         },

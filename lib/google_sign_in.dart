@@ -505,6 +505,7 @@ class _Testler extends State<Testler> {
       //saveTestResult("Erkek", 15, false, "nadir", "Kara Murat", "Mutluluk");
       =>
       Scaffold(
+          backgroundColor: Colors.blueGrey,
           appBar: AppBar(
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
@@ -514,7 +515,18 @@ class _Testler extends State<Testler> {
           body: Center(
             child: Column(
               children: [
-                Text("Onceki Testler"),
+                SizedBox(
+                  height: 10,
+                ),
+                Text("Önceki Testler",
+                  style: TextStyle(
+                  color: Colors.white60,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w800),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 StreamBuilder<QuerySnapshot>(
                   stream: _usersStream,
                   builder: (BuildContext context,

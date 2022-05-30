@@ -1,29 +1,44 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\seffa\\StudioProjects\\neurotech-mobile2\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "outputFile": "C:\\Users\\okant\\Desktop\\neurotech-mobile\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\seffa\\StudioProjects\\neurotech-mobile2\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "source": "C:\\Users\\okant\\.gradle\\caches\\transforms-2\\files-2.1\\7770b5bd4a0b4c1615612cea4b4f7058\\browser-1.0.0\\res\\values\\values.xml",
                     "from": {
-                        "startLines": "3,14",
-                        "startColumns": "4,4",
-                        "startOffsets": "176,830",
-                        "endLines": "7,16",
-                        "endColumns": "12,12",
-                        "endOffsets": "472,996"
+                        "startLines": "2,3,4,5,6,7",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "55,113,179,242,304,375",
+                        "endColumns": "57,65,62,61,70,71",
+                        "endOffsets": "108,174,237,299,370,442"
                     },
                     "to": {
-                        "startLines": "134,139",
-                        "startColumns": "4,4",
-                        "startOffsets": "9771,10068",
-                        "endLines": "138,141",
-                        "endColumns": "12,12",
-                        "endOffsets": "10063,10232"
+                        "startLines": "14,15,16,17,28,29",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "722,780,846,909,1774,1845",
+                        "endColumns": "57,65,62,61,70,71",
+                        "endOffsets": "775,841,904,966,1840,1912"
                     }
                 },
                 {
-                    "source": "C:\\Users\\seffa\\.gradle\\caches\\transforms-2\\files-2.1\\e45340d464f7f3aff0f2e48db64a1d02\\core-1.6.0\\res\\values\\values.xml",
+                    "source": "C:\\Users\\okant\\Desktop\\neurotech-mobile\\build\\app\\generated\\res\\google-services\\debug\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "55,199,281,385,494,614,713",
+                        "endColumns": "143,81,103,108,119,98,75",
+                        "endOffsets": "194,276,380,489,609,708,784"
+                    },
+                    "to": {
+                        "startLines": "126,127,128,129,130,131,132",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "8966,9110,9192,9296,9405,9525,9624",
+                        "endColumns": "143,81,103,108,119,98,75",
+                        "endOffsets": "9105,9187,9291,9400,9520,9619,9695"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\okant\\.gradle\\caches\\transforms-2\\files-2.1\\e45340d464f7f3aff0f2e48db64a1d02\\core-1.6.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,89,90,94,95,96,97,104,111,159,191,228",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -42,7 +57,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\seffa\\.gradle\\caches\\transforms-2\\files-2.1\\45dd2ac3d30d6036251cd10ecf7636cf\\jetified-play-services-base-18.0.1\\res\\values\\values.xml",
+                    "source": "C:\\Users\\okant\\.gradle\\caches\\transforms-2\\files-2.1\\45dd2ac3d30d6036251cd10ecf7636cf\\jetified-play-services-base-18.0.1\\res\\values\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,33,46",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -61,43 +76,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\seffa\\StudioProjects\\neurotech-mobile2\\build\\app\\generated\\res\\google-services\\debug\\values\\values.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "55,199,281,385,494,614,713",
-                        "endColumns": "143,81,103,108,119,98,75",
-                        "endOffsets": "194,276,380,489,609,708,784"
-                    },
-                    "to": {
-                        "startLines": "126,127,128,129,130,131,132",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "8966,9110,9192,9296,9405,9525,9624",
-                        "endColumns": "143,81,103,108,119,98,75",
-                        "endOffsets": "9105,9187,9291,9400,9520,9619,9695"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\seffa\\.gradle\\caches\\transforms-2\\files-2.1\\0f47e5e6df552b3f7276790899da82eb\\coordinatorlayout-1.0.0\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2,102,3,13",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "55,5935,116,724",
-                        "endLines": "2,104,12,101",
-                        "endColumns": "60,12,24,24",
-                        "endOffsets": "111,6075,719,5930"
-                    },
-                    "to": {
-                        "startLines": "2,155,184,194",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "105,11134,12629,13237",
-                        "endLines": "2,157,193,282",
-                        "endColumns": "60,12,24,24",
-                        "endOffsets": "161,11274,13232,18443"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\seffa\\.gradle\\caches\\transforms-2\\files-2.1\\e019dbefe4df0bbed8b42ad40314fe73\\jetified-window-1.0.0-beta04\\res\\values\\values.xml",
+                    "source": "C:\\Users\\okant\\.gradle\\caches\\transforms-2\\files-2.1\\e019dbefe4df0bbed8b42ad40314fe73\\jetified-window-1.0.0-beta04\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2,7,8,9,10,11,19,23,34,51",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",
@@ -116,7 +95,45 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\seffa\\.gradle\\caches\\transforms-2\\files-2.1\\77d4c3d51816ff6260deae7d0dcd3a18\\jetified-play-services-basement-18.0.0\\res\\values\\values.xml",
+                    "source": "C:\\Users\\okant\\Desktop\\neurotech-mobile\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "from": {
+                        "startLines": "3,14",
+                        "startColumns": "4,4",
+                        "startOffsets": "176,830",
+                        "endLines": "7,16",
+                        "endColumns": "12,12",
+                        "endOffsets": "472,996"
+                    },
+                    "to": {
+                        "startLines": "134,139",
+                        "startColumns": "4,4",
+                        "startOffsets": "9771,10068",
+                        "endLines": "138,141",
+                        "endColumns": "12,12",
+                        "endOffsets": "10063,10232"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\okant\\.gradle\\caches\\transforms-2\\files-2.1\\0f47e5e6df552b3f7276790899da82eb\\coordinatorlayout-1.0.0\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,102,3,13",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,5935,116,724",
+                        "endLines": "2,104,12,101",
+                        "endColumns": "60,12,24,24",
+                        "endOffsets": "111,6075,719,5930"
+                    },
+                    "to": {
+                        "startLines": "2,155,184,194",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "105,11134,12629,13237",
+                        "endLines": "2,157,193,282",
+                        "endColumns": "60,12,24,24",
+                        "endOffsets": "161,11274,13232,18443"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\okant\\.gradle\\caches\\transforms-2\\files-2.1\\77d4c3d51816ff6260deae7d0dcd3a18\\jetified-play-services-basement-18.0.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "4,7",
                         "startColumns": "0,0",
@@ -130,23 +147,6 @@
                         "startOffsets": "6495,7673",
                         "endColumns": "67,166",
                         "endOffsets": "6558,7835"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\seffa\\.gradle\\caches\\transforms-2\\files-2.1\\7770b5bd4a0b4c1615612cea4b4f7058\\browser-1.0.0\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7",
-                        "startColumns": "4,4,4,4,4,4",
-                        "startOffsets": "55,113,179,242,304,375",
-                        "endColumns": "57,65,62,61,70,71",
-                        "endOffsets": "108,174,237,299,370,442"
-                    },
-                    "to": {
-                        "startLines": "14,15,16,17,28,29",
-                        "startColumns": "4,4,4,4,4,4",
-                        "startOffsets": "722,780,846,909,1774,1845",
-                        "endColumns": "57,65,62,61,70,71",
-                        "endOffsets": "775,841,904,966,1840,1912"
                     }
                 }
             ]

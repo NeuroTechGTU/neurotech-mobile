@@ -1,14 +1,14 @@
 [
     {
-        "merged": "C:\\Users\\seffa\\StudioProjects\\neurotech-mobile2\\build\\google_sign_in_android\\intermediates\\res\\merged\\debug\\drawable-watch-v20\\common_google_signin_btn_text_light_normal.xml",
-        "source": "C:\\Users\\seffa\\.gradle\\caches\\transforms-2\\files-2.1\\a9fa6c03d9572e1c43e0807bfc69fba6\\jetified-play-services-auth-20.0.1\\res\\drawable-watch-v20\\common_google_signin_btn_text_light_normal.xml"
+        "merged": "C:\\Users\\okant\\Desktop\\neurotech-mobile\\build\\google_sign_in_android\\intermediates\\res\\merged\\debug\\drawable-watch-v20\\common_google_signin_btn_text_light_normal.xml",
+        "source": "C:\\Users\\okant\\.gradle\\caches\\transforms-2\\files-2.1\\a9fa6c03d9572e1c43e0807bfc69fba6\\jetified-play-services-auth-20.0.1\\res\\drawable-watch-v20\\common_google_signin_btn_text_light_normal.xml"
     },
     {
-        "merged": "C:\\Users\\seffa\\StudioProjects\\neurotech-mobile2\\build\\google_sign_in_android\\intermediates\\res\\merged\\debug\\drawable-watch-v20\\common_google_signin_btn_text_disabled.xml",
-        "source": "C:\\Users\\seffa\\.gradle\\caches\\transforms-2\\files-2.1\\a9fa6c03d9572e1c43e0807bfc69fba6\\jetified-play-services-auth-20.0.1\\res\\drawable-watch-v20\\common_google_signin_btn_text_disabled.xml"
+        "merged": "C:\\Users\\okant\\Desktop\\neurotech-mobile\\build\\google_sign_in_android\\intermediates\\res\\merged\\debug\\drawable-watch-v20\\common_google_signin_btn_text_dark_normal.xml",
+        "source": "C:\\Users\\okant\\.gradle\\caches\\transforms-2\\files-2.1\\a9fa6c03d9572e1c43e0807bfc69fba6\\jetified-play-services-auth-20.0.1\\res\\drawable-watch-v20\\common_google_signin_btn_text_dark_normal.xml"
     },
     {
-        "merged": "C:\\Users\\seffa\\StudioProjects\\neurotech-mobile2\\build\\google_sign_in_android\\intermediates\\res\\merged\\debug\\drawable-watch-v20\\common_google_signin_btn_text_dark_normal.xml",
-        "source": "C:\\Users\\seffa\\.gradle\\caches\\transforms-2\\files-2.1\\a9fa6c03d9572e1c43e0807bfc69fba6\\jetified-play-services-auth-20.0.1\\res\\drawable-watch-v20\\common_google_signin_btn_text_dark_normal.xml"
+        "merged": "C:\\Users\\okant\\Desktop\\neurotech-mobile\\build\\google_sign_in_android\\intermediates\\res\\merged\\debug\\drawable-watch-v20\\common_google_signin_btn_text_disabled.xml",
+        "source": "C:\\Users\\okant\\.gradle\\caches\\transforms-2\\files-2.1\\a9fa6c03d9572e1c43e0807bfc69fba6\\jetified-play-services-auth-20.0.1\\res\\drawable-watch-v20\\common_google_signin_btn_text_disabled.xml"
     }
 ]

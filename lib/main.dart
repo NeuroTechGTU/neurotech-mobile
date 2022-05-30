@@ -2,10 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:neurotech_ceng/APISayfasi.dart';
 import 'package:provider/provider.dart';
 
 import 'google_sign_in.dart';
-import 'movie_information.dart';
 import 'profile_information.dart';
 
 User? user = null;
@@ -278,8 +278,40 @@ class MainPage1 extends StatelessWidget {
                         provider.googleLogin();*/
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => ProfilInfo()),
+                          MaterialPageRoute(builder: (context) => ProfilInfo()),
+                        );
+                      },
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24)),
+                        primary: Colors.white,
+                        onPrimary: Colors.blue,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 0, vertical: 8),
+                        child: Row(
+                          // Replace with a Row for horizontal icon + text
+                          children: <Widget>[
+                            FaIcon(FontAwesomeIcons.google, color: Colors.blue),
+                            Text(
+                              "  API Sayfası",
+                              /*style: GoogleFonts.lemon(
+                                  color: Colors.red, fontSize: 16),*/
+                            ),
+                          ],
+                        ),
+                      ),
+                      onPressed: () {
+                        /*final provider = Provider.of<GoogleSignInProvider>(
+                            context,
+                            listen: false);
+                        provider.googleLogin();*/
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => APISayfasi()),
                         );
                       },
                     ),

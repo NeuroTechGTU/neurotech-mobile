@@ -6,7 +6,6 @@ import 'package:neurotech_ceng/APISayfasi.dart';
 import 'package:provider/provider.dart';
 
 import 'google_sign_in.dart';
-import 'profile_information.dart';
 
 User? user = null;
 void main() async {
@@ -272,14 +271,15 @@ class MainPage1 extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        /*final provider = Provider.of<GoogleSignInProvider>(
+                        final provider = Provider.of<GoogleSignInProvider>(
                             context,
                             listen: false);
-                        provider.googleLogin();*/
-                        Navigator.push(
+                        provider.googleLogin();
+                        // eleman kayıtlıysa profil bilgisi alınmıcak
+                        /* Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => ProfilInfo()),
-                        );
+                        );*/
                       },
                     ),
                     ElevatedButton(

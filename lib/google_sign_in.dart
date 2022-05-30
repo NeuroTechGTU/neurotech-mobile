@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:neurotech_ceng/movie_information.dart';
+import 'package:neurotech_ceng/profile_information.dart';
 import 'package:provider/provider.dart';
 
 import 'main.dart';
@@ -46,7 +48,7 @@ class googleLoginPage2 extends StatefulWidget {
 
 class _googleLoginPage2State extends State<googleLoginPage2> {
   bool check = false;
-
+  //bool kayitEkraniPushed = false;
   @override
   Widget build(BuildContext context) => Scaffold(
           body: StreamBuilder(
@@ -118,11 +120,18 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
                           // addPostFrameCallback eklemeyince sıkıntı cıkardı:
                           // https://stackoverflow.com/questions/47592301/setstate-or-markneedsbuild-called-during-build
                           WidgetsBinding.instance.addPostFrameCallback((_) {
+                            //kayitEkraniPushed = true;
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const SaveUser()),
+                                  builder: (context) => ProfilInfo()),
                             );
+                            /*
+                            Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ProfilInfo()),
+                        );
+                            * */
                           });
                           /*Navigator.push(
                             context,
@@ -135,6 +144,10 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
 
                         if (snapshot.connectionState == ConnectionState.done) {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
+                            /*if (kayitEkraniPushed) {
+                              Navigator.pop(context);
+                              kayitEkraniPushed = false;
+                            }*/
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -248,7 +261,6 @@ Future<void> saveUser(String cinsiyet, int yas, bool duygusalMisin,
     'email': FirebaseAuth.instance.currentUser!.email,
     //'timestamp': DateTime.now().millisecondsSinceEpoch,
     'userId': FirebaseAuth.instance.currentUser!.uid,
-
     'cinsiyet': cinsiyet,
     'yas': yas,
     'duygusalMisin': duygusalMisin,
@@ -256,8 +268,11 @@ Future<void> saveUser(String cinsiyet, int yas, bool duygusalMisin,
   });
 }
 
-Future<void> saveTestResult(String cinsiyet, int yas, bool duygusalMisin,
-    String filmIzlemeAliskanligi, String film, String sonuc) async {
+Future<void> saveTestResult(
+    /*String cinsiyet, int yas, bool duygusalMisin,*/
+    String filmIzlemeAliskanligi,
+    String film,
+    String sonuc) async {
   /*if (_loginState != ApplicationLoginState.loggedIn) {
     throw Exception('Must be logged in');
   }*/
@@ -270,9 +285,9 @@ Future<void> saveTestResult(String cinsiyet, int yas, bool duygusalMisin,
     'email': FirebaseAuth.instance.currentUser!.email,
     //'timestamp': DateTime.now().millisecondsSinceEpoch,
     'userId': FirebaseAuth.instance.currentUser!.uid,
-    'cinsiyet': cinsiyet,
+    /*'cinsiyet': cinsiyet,
     'yas': yas,
-    'duygusalMisin': duygusalMisin,
+    'duygusalMisin': duygusalMisin,*/
     'filmIzlemeAliskanligi': filmIzlemeAliskanligi,
     'testEdilenfilm': film,
     'duygu': sonuc
@@ -375,6 +390,131 @@ class _Anasayfa extends State<Anasayfa> {
           body: Center(
             child: Column(
               children: [
+                /*ElevatedButton(
+                  onPressed: () {
+                    saveTestResult(
+                        "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");
+                    // Navigate back to first route when tapped.
+                  },
+                  child: const Text('Testi Bitir'),
+                ),*/
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DropDownDemo()),
+                    );
+                    /*saveTestResult(
+                        "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");*/
+                    // Navigate back to first route when tapped.
+                  },
+                  child: const Text('Testi Baslat'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Testler()),
+                    );
+                    /*saveTestResult(
+                        "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");*/
+                    // Navigate back to first route when tapped.
+                  },
+                  child: const Text('Önceki Testlerin'),
+                ),
+              ],
+            ),
+          ));
+}
+
+class TestEkrani extends StatefulWidget {
+  @override
+  State<TestEkrani> createState() => _TestEkrani();
+}
+
+class _TestEkrani extends State<TestEkrani> {
+  bool check = false;
+  @override
+  Widget build(BuildContext context)
+      //saveTestResult("Erkek", 15, false, "nadir", "Kara Murat", "Mutluluk");
+      =>
+      Scaffold(
+          appBar: AppBar(
+            // Here we take the value from the MyHomePage object that was created by
+            // the App.build method, and use it to set our appbar title.
+            //automaticallyImplyLeading: false,
+            title: Text("Neurotech"),
+          ),
+          body: Center(
+            child: Column(
+              children: [
+                Text("TEST EKRANI"),
+                ElevatedButton(
+                  onPressed: () {
+                    saveTestResult(/*"erkek", 65, false, */ filminTuru!,
+                        filminAdi!, "API'DAN GELCEK");
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    // Navigate back to first route when tapped.
+                  },
+                  child: const Text('Testi Bitir'),
+                )
+                /*ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TestEkrani()),
+                    );
+                    /*saveTestResult(
+                        "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");*/
+                    // Navigate back to first route when tapped.
+                  },
+                  child: const Text('Testi Baslat'),
+                ),*/
+                /*ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TestEkrani()),
+                    );
+                    /*saveTestResult(
+                        "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");*/
+                    // Navigate back to first route when tapped.
+                  },
+                  child: const Text('Testi Baslat'),
+                ),*/
+              ],
+            ),
+          ));
+}
+
+class Testler extends StatefulWidget {
+  @override
+  State<Testler> createState() => _Testler();
+}
+
+class _Testler extends State<Testler> {
+  bool check = false;
+
+  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
+      .collection('Tests')
+      .where('email', isEqualTo: user?.email)
+      .snapshots();
+  @override
+  Widget build(BuildContext context)
+      //saveTestResult("Erkek", 15, false, "nadir", "Kara Murat", "Mutluluk");
+      =>
+      Scaffold(
+          appBar: AppBar(
+            // Here we take the value from the MyHomePage object that was created by
+            // the App.build method, and use it to set our appbar title.
+            //automaticallyImplyLeading: false,
+            title: Text("Neurotech"),
+          ),
+          body: Center(
+            child: Column(
+              children: [
+                Text("Onceki Testler"),
                 StreamBuilder<QuerySnapshot>(
                   stream: _usersStream,
                   builder: (BuildContext context,
@@ -404,15 +544,7 @@ class _Anasayfa extends State<Anasayfa> {
                       }).toList(),
                     );
                   },
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    saveTestResult(
-                        "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");
-                    // Navigate back to first route when tapped.
-                  },
-                  child: const Text('Testi Bitir'),
-                ),
+                )
               ],
             ),
           ));

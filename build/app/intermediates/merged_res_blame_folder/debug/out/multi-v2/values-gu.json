@@ -1,10 +1,27 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\okant\\Desktop\\neurotech-mobile\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-gu\\values-gu.xml",
+            "outputFile": "C:\\Users\\seffa\\StudioProjects\\neurotech-mobile2\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-gu\\values-gu.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\okant\\.gradle\\caches\\transforms-2\\files-2.1\\e45340d464f7f3aff0f2e48db64a1d02\\core-1.6.0\\res\\values-gu\\values-gu.xml",
+                    "source": "C:\\Users\\seffa\\.gradle\\caches\\transforms-2\\files-2.1\\77d4c3d51816ff6260deae7d0dcd3a18\\jetified-play-services-basement-18.0.0\\res\\values-gu\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "195",
+                        "endColumns": "142",
+                        "endOffsets": "337"
+                    },
+                    "to": {
+                        "startLines": "10",
+                        "startColumns": "4",
+                        "startOffsets": "1037",
+                        "endColumns": "146",
+                        "endOffsets": "1179"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\seffa\\.gradle\\caches\\transforms-2\\files-2.1\\e45340d464f7f3aff0f2e48db64a1d02\\core-1.6.0\\res\\values-gu\\values-gu.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -21,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\okant\\.gradle\\caches\\transforms-2\\files-2.1\\45dd2ac3d30d6036251cd10ecf7636cf\\jetified-play-services-base-18.0.1\\res\\values-gu\\values.xml",
+                    "source": "C:\\Users\\seffa\\.gradle\\caches\\transforms-2\\files-2.1\\45dd2ac3d30d6036251cd10ecf7636cf\\jetified-play-services-base-18.0.1\\res\\values-gu\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -35,23 +52,6 @@
                         "startOffsets": "55,163,329,454,566,704,826,937,1184,1332,1440,1604,1729,1872,2022,2083,2149",
                         "endColumns": "107,165,124,111,137,121,110,99,147,107,163,124,142,149,60,65,81",
                         "endOffsets": "158,324,449,561,699,821,932,1032,1327,1435,1599,1724,1867,2017,2078,2144,2226"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\okant\\.gradle\\caches\\transforms-2\\files-2.1\\77d4c3d51816ff6260deae7d0dcd3a18\\jetified-play-services-basement-18.0.0\\res\\values-gu\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "195",
-                        "endColumns": "142",
-                        "endOffsets": "337"
-                    },
-                    "to": {
-                        "startLines": "10",
-                        "startColumns": "4",
-                        "startOffsets": "1037",
-                        "endColumns": "146",
-                        "endOffsets": "1179"
                     }
                 }
             ]

@@ -161,7 +161,6 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Something went wrong!'));
           } else {
-
             return MainPage1();
           } //MainPage1();
         },
@@ -343,6 +342,7 @@ class Anasayfa extends StatefulWidget {
 
 class _Anasayfa extends State<Anasayfa> {
   bool check = false;
+
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
       .collection('Tests')
       .where('email', isEqualTo: user?.email)
@@ -412,7 +412,7 @@ class _Anasayfa extends State<Anasayfa> {
                     // Navigate back to first route when tapped.
                   },
                   child: const Text('Testi Bitir'),
-                )
+                ),
               ],
             ),
           ));

@@ -43,6 +43,8 @@ class _APISayfasi extends State<APISayfasi> {
           isLoaded = true;
         });
       }
+      print("printer");
+
       /*await delay(500);
       print('Delayed 500 milliseconds');*/
       print("every ten seconds you should see me");

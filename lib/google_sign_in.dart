@@ -11,6 +11,7 @@ import 'package:neurotech_ceng/profile_information.dart';
 import 'package:provider/provider.dart';
 
 import 'main.dart';
+import 'anlik_data_chart.dart';
 
 class GoogleSignInProvider extends ChangeNotifier {
   GoogleSignInAccount? _user;
@@ -415,7 +416,7 @@ class _Anasayfa extends State<Anasayfa> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => chart()),
+                      MaterialPageRoute(builder: (context) => anlikChart()),
                     );
                     /*saveTestResult(
                         "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");*/

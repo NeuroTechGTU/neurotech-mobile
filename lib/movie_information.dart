@@ -140,7 +140,7 @@ class _DropDownDemoState extends State<DropDownDemo> {
                       turSecildi)
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => chart()),
+                      MaterialPageRoute(builder: (context) => TestEkrani()),
                     );
                 },
                 style: ElevatedButton.styleFrom(

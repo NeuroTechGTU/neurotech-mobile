@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neurotech_ceng/google_sign_in.dart';
 import 'chart.dart';
+import 'anlik_data_chart.dart';
 
 class DropDownDemo extends StatefulWidget {
   @override
@@ -140,7 +141,7 @@ class _DropDownDemoState extends State<DropDownDemo> {
                       turSecildi)
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => TestEkrani()),
+                      MaterialPageRoute(builder: (context) => anlikChart()),
                     );
                 },
                 style: ElevatedButton.styleFrom(

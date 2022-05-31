@@ -416,7 +416,7 @@ class _Anasayfa extends State<Anasayfa> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => anlikChart()),
+                      MaterialPageRoute(builder: (context) => chart()),
                     );
                     /*saveTestResult(
                         "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");*/

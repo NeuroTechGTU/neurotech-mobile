@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:neurotech_ceng/chart.dart';
 import 'package:neurotech_ceng/movie_information.dart';
 import 'package:neurotech_ceng/profile_information.dart';
 import 'package:provider/provider.dart';
@@ -414,7 +415,7 @@ class _Anasayfa extends State<Anasayfa> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Testler()),
+                      MaterialPageRoute(builder: (context) => chart()),
                     );
                     /*saveTestResult(
                         "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");*/

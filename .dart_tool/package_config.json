@@ -272,6 +272,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "syncfusion_flutter_charts",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_charts-20.1.57",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "syncfusion_flutter_core",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_core-20.1.57",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "term_glyph",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/term_glyph-1.2.0",
       "packageUri": "lib/",
@@ -302,7 +314,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2022-05-30T21:08:07.776471Z",
+  "generated": "2022-05-30T21:47:52.007207Z",
   "generator": "pub",
   "generatorVersion": "2.17.0"
 }

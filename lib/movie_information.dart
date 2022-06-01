@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:neurotech_ceng/google_sign_in.dart';
-import 'chart.dart';
-import 'anlik_data_chart.dart';
+import 'chart_previous_tests.dart';
+import 'chart_anlik_data.dart';
 
 class DropDownDemo extends StatefulWidget {
   @override

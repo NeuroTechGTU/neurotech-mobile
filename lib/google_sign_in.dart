@@ -5,13 +5,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:neurotech_ceng/chart.dart';
+import 'package:neurotech_ceng/chart_previous_tests.dart';
 import 'package:neurotech_ceng/movie_information.dart';
 import 'package:neurotech_ceng/profile_information.dart';
 import 'package:provider/provider.dart';
 
 import 'main.dart';
-import 'anlik_data_chart.dart';
+import 'chart_anlik_data.dart';
 
 class GoogleSignInProvider extends ChangeNotifier {
   GoogleSignInAccount? _user;

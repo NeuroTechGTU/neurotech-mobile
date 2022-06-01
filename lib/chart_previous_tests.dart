@@ -26,6 +26,10 @@ class _chart extends State<chart>  {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            title: Text('NeuroTech'),
+          ),
           body: SfCartesianChart(
             title: ChartTitle(text: 'Daha Önce İzlenen Dizilerin Duygu Oranı'),
             legend: Legend(isVisible: true),

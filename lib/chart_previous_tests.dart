@@ -82,7 +82,7 @@ class _chart extends State<chart> {
                   return ListView(
                     scrollDirection: Axis.vertical,
                     physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
+                    //shrinkWrap: true,
                     children:
                         snapshot.data!.docs.map((DocumentSnapshot document) {
                       Map<String, dynamic> data =
@@ -92,6 +92,8 @@ class _chart extends State<chart> {
                       return Column(
                         children: [
                           ListTile(
+                            focusColor: Colors.red,
+                            textColor: Colors.blue,
                             title: new RichText(
                               text: new TextSpan(
                                 // Note: Styles for TextSpans must be explicitly defined.

@@ -1,12 +1,22 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:neurotech_ceng/APISayfasi.dart';
 import 'package:provider/provider.dart';
 
+import './ChatPage.dart';
+import 'bluetooth/BackgroundCollectingTask.dart';
+import 'bluetooth/SelectBondedDevicePage.dart';
+import 'chart.dart';
 import 'google_sign_in.dart';
+import 'movie_information.dart';
 
+BluetoothState _bluetoothState = BluetoothState.UNKNOWN;
 User? user = null;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,11 +25,74 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-  //const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
-  // This widget is the root of your application.
+class _MyAppState extends State<MyApp> {
+  String _address = "...";
+  String _name = "...";
+
+  Timer? _discoverableTimeoutTimer;
+  int _discoverableTimeoutSecondsLeft = 0;
+
+  BackgroundCollectingTask? _collectingTask;
+
+  bool _autoAcceptPairingRequests = false;
+  @override
+  void initState() {
+    super.initState();
+    FlutterBluetoothSerial.instance.state.then((state) {
+      setState(() {
+        _bluetoothState = state;
+      });
+    });
+    Future.doWhile(() async {
+      // Wait if adapter not enabled
+      if ((await FlutterBluetoothSerial.instance.isEnabled) ?? false) {
+        return false;
+      }
+      await Future.delayed(Duration(milliseconds: 0xDD));
+      return true;
+    }).then((_) {
+      // Update the address field
+      FlutterBluetoothSerial.instance.address.then((address) {
+        setState(() {
+          _address = address!;
+        });
+      });
+    });
+    FlutterBluetoothSerial.instance.name.then((name) {
+      setState(() {
+        _name = name!;
+      });
+    });
+    // Listen for futher state changes
+    FlutterBluetoothSerial.instance
+        .onStateChanged()
+        .listen((BluetoothState state) {
+      setState(() {
+        _bluetoothState = state;
+
+        // Discoverable mode is disabled when Bluetooth gets disabled
+        _discoverableTimeoutTimer = null;
+        _discoverableTimeoutSecondsLeft = 0;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    FlutterBluetoothSerial.instance.setPairingRequestHandler(null);
+    _collectingTask?.dispose();
+    _discoverableTimeoutTimer?.cancel();
+    super.dispose();
+  }
+
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
+  //const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     /*final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
@@ -326,4 +399,132 @@ class MainPage1 extends StatelessWidget {
       ),
     );
   }
+}
+
+class Anasayfa extends StatefulWidget {
+  @override
+  State<Anasayfa> createState() => _Anasayfa();
+}
+
+class _Anasayfa extends State<Anasayfa> {
+  bool check = false;
+
+  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
+      .collection('Tests')
+      .where('email', isEqualTo: user?.email)
+      .snapshots();
+  void _startChat(BuildContext context, BluetoothDevice server) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return ChatPage(server: server);
+        },
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context)
+      //saveTestResult("Erkek", 15, false, "nadir", "Kara Murat", "Mutluluk");
+      =>
+      Scaffold(
+          appBar: AppBar(
+              // Here we take the value from the MyHomePage object that was created by
+              // the App.build method, and use it to set our appbar title.
+              automaticallyImplyLeading: false,
+              title: Text("Neurotech"),
+              actions: <Widget>[
+                TextButton(
+                  style: TextButton.styleFrom(
+                      primary: Theme.of(context).colorScheme.onPrimary),
+                  child: Text("Logout"),
+                  //icon: const Icon(Icons.add_alert),
+                  //tooltip: 'Show Snackbar',
+                  onPressed: () {
+                    final provider = Provider.of<GoogleSignInProvider>(context,
+                        listen: false);
+                    provider.logout();
+                    Navigator.pop(context);
+                  },
+                )
+              ]),
+          body: Center(
+            child: Column(
+              children: [
+                SwitchListTile(
+                  title: const Text('Enable Bluetooth'),
+                  value: _bluetoothState.isEnabled,
+                  onChanged: (bool value) {
+                    // Do the request and update with the true value then
+                    future() async {
+                      // async lambda seems to not working
+                      if (value)
+                        await FlutterBluetoothSerial.instance.requestEnable();
+                      else
+                        await FlutterBluetoothSerial.instance.requestDisable();
+                    }
+
+                    future().then((_) {
+                      setState(() {});
+                    });
+                  },
+                ),
+                ListTile(
+                  title: ElevatedButton(
+                    child: const Text('Connect to paired device to chat'),
+                    onPressed: () async {
+                      final BluetoothDevice? selectedDevice =
+                          await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return SelectBondedDevicePage(
+                                checkAvailability: false);
+                          },
+                        ),
+                      );
+
+                      if (selectedDevice != null) {
+                        print('Connect -> selected ' + selectedDevice.address);
+                        _startChat(context, selectedDevice);
+                      } else {
+                        print('Connect -> no device selected');
+                      }
+                    },
+                  ),
+                ),
+                /*ElevatedButton(
+                  onPressed: () {
+                    saveTestResult(
+                        "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");
+                    // Navigate back to first route when tapped.
+                  },
+                  child: const Text('Testi Bitir'),
+                ),*/
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DropDownDemo()),
+                    );
+                    /*saveTestResult(
+                        "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");*/
+                    // Navigate back to first route when tapped.
+                  },
+                  child: const Text('Testi Baslat'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => chart()),
+                    );
+                    /*saveTestResult(
+                        "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");*/
+                    // Navigate back to first route when tapped.
+                  },
+                  child: const Text('Önceki Testlerin'),
+                ),
+              ],
+            ),
+          ));
 }

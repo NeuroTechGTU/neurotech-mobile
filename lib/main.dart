@@ -6,13 +6,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:neurotech_ceng/APISayfasi.dart';
 import 'package:provider/provider.dart';
 
-import './ChatPage.dart';
 import 'bluetooth/BackgroundCollectingTask.dart';
+import 'bluetooth/ChatPage.dart';
 import 'bluetooth/SelectBondedDevicePage.dart';
-import 'chart.dart';
+import 'chart_previous_tests.dart';
 import 'google_sign_in.dart';
 import 'movie_information.dart';
 
@@ -351,7 +350,7 @@ class MainPage1 extends StatelessWidget {
                             listen: false);
                         provider.googleLogin();
                         // eleman kayıtlıysa profil bilgisi alınmıcak
-                        /* Navigator.push(
+                        /*Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => ProfilInfo()),
                         );*/
@@ -386,7 +385,7 @@ class MainPage1 extends StatelessWidget {
                         provider.googleLogin();*/
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => APISayfasi()),
+                          MaterialPageRoute(builder: (context) => Anasayfa()),
                         );
                       },
                     ),
@@ -401,12 +400,12 @@ class MainPage1 extends StatelessWidget {
   }
 }
 
-class Anasayfa extends StatefulWidget {
+class BluetoothPage extends StatefulWidget {
   @override
-  State<Anasayfa> createState() => _Anasayfa();
+  State<BluetoothPage> createState() => _BluetoothPage();
 }
 
-class _Anasayfa extends State<Anasayfa> {
+class _BluetoothPage extends State<BluetoothPage> {
   bool check = false;
 
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance

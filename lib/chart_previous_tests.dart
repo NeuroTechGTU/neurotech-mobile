@@ -21,8 +21,16 @@ class _chart extends State<chart> {
       .collection('Tests')
       .where('email', isEqualTo: user?.email)
       .snapshots();
+  final Future<QuerySnapshot<Map<String, dynamic>>> testsStream =
+      FirebaseFirestore.instance
+          .collection('Tests')
+          .where('email', isEqualTo: user?.email)
+          .get();
+  //.;
+
   @override
   void initState() {
+    //getChartDataFuture();
     _chartData = getChartData();
     _tooltipBehavior = TooltipBehavior(enable: true);
     super.initState();
@@ -41,31 +49,65 @@ class _chart extends State<chart> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SfCartesianChart(
-                backgroundColor: Color(0x0), //Colors.indigo.shade700,
-                plotAreaBackgroundColor: Color(0x0),
-                //plotAreaBorderColor: Colors.red,
-                /*title:
-                ChartTitle(text: 'Daha Önce İzlenen Dizilerin Duygu Oranı'),
+              FutureBuilder(
+                future: testsStream,
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                        snapshot) {
+                  return SfCartesianChart(
+                    backgroundColor: Color(0x0), //Colors.indigo.shade700,
+                    plotAreaBackgroundColor: Color(0x0),
+                    //plotAreaBorderColor: Colors.red,
+                    /*title:
+                  ChartTitle(text: 'Daha Önce İzlenen Dizilerin Duygu Oranı'),
             */ //legend: Legend(isVisible: true),
-                tooltipBehavior: _tooltipBehavior,
-                series: <ChartSeries>[
-                  BarSeries<GDPData, String>(
-                      name: '',
-                      dataSource: _chartData,
-                      xValueMapper: (GDPData gdp, _) => gdp.continent,
-                      yValueMapper: (GDPData gdp, _) => gdp.gdp,
-                      dataLabelSettings: DataLabelSettings(isVisible: true),
-                      enableTooltip: true,
-                      //trackColor: Colors.blue,
-                      color: Colors.teal.shade400)
-                ],
-                primaryXAxis: CategoryAxis(),
-                primaryYAxis: NumericAxis(
-                  edgeLabelPlacement: EdgeLabelPlacement.shift,
-                  //numberFormat: NumberFormat.simpleCurrency(decimalDigits: 0),
-                  //title: AxisTitle(text: 'GDP in billions U.S.')
-                ),
+                    tooltipBehavior: _tooltipBehavior,
+                    series: <ChartSeries>[
+                      BarSeries<GDPData, String>(
+                          name: '',
+                          dataSource:
+                              getChartDataSnapshot(snapshot), //_chartData,
+                          xValueMapper: (GDPData gdp, _) => gdp.continent,
+                          yValueMapper: (GDPData gdp, _) => gdp.gdp,
+                          dataLabelSettings: DataLabelSettings(isVisible: true),
+                          enableTooltip: true,
+                          //trackColor: Colors.blue,
+                          color: Colors.teal.shade400)
+                    ],
+                    primaryXAxis: CategoryAxis(),
+                    primaryYAxis: NumericAxis(
+                      edgeLabelPlacement: EdgeLabelPlacement.shift,
+                      //numberFormat: NumberFormat.simpleCurrency(decimalDigits: 0),
+                      //title: AxisTitle(text: 'GDP in billions U.S.')
+                    ),
+                  );
+                },
+                /*child: SfCartesianChart(
+                  backgroundColor: Color(0x0), //Colors.indigo.shade700,
+                  plotAreaBackgroundColor: Color(0x0),
+                  //plotAreaBorderColor: Colors.red,
+                  /*title:
+                  ChartTitle(text: 'Daha Önce İzlenen Dizilerin Duygu Oranı'),
+            */ //legend: Legend(isVisible: true),
+                  tooltipBehavior: _tooltipBehavior,
+                  series: <ChartSeries>[
+                    BarSeries<GDPData, String>(
+                        name: '',
+                        dataSource: _chartData,
+                        xValueMapper: (GDPData gdp, _) => gdp.continent,
+                        yValueMapper: (GDPData gdp, _) => gdp.gdp,
+                        dataLabelSettings: DataLabelSettings(isVisible: true),
+                        enableTooltip: true,
+                        //trackColor: Colors.blue,
+                        color: Colors.teal.shade400)
+                  ],
+                  primaryXAxis: CategoryAxis(),
+                  primaryYAxis: NumericAxis(
+                    edgeLabelPlacement: EdgeLabelPlacement.shift,
+                    //numberFormat: NumberFormat.simpleCurrency(decimalDigits: 0),
+                    //title: AxisTitle(text: 'GDP in billions U.S.')
+                  ),
+                )*/
               ),
               StreamBuilder<QuerySnapshot>(
                 stream: _usersStream,
@@ -82,7 +124,7 @@ class _chart extends State<chart> {
                   return ListView(
                     scrollDirection: Axis.vertical,
                     physics: NeverScrollableScrollPhysics(),
-                    //shrinkWrap: true,
+                    shrinkWrap: true,
                     children:
                         snapshot.data!.docs.map((DocumentSnapshot document) {
                       Map<String, dynamic> data =
@@ -173,24 +215,77 @@ class _chart extends State<chart> {
       ),
     );
   }
+}
 
-  List<GDPData> getChartData() {
-    final List<GDPData> chartData = [
-      GDPData("Korku", 1600),
-      GDPData("Şaşkınlık", 2490),
-      GDPData("Öfke", 2900),
-      GDPData("Antipati", 7500),
-      GDPData("İğrenme", 9565),
-      GDPData("Güven", 5000),
-      GDPData("Üzüntü", 7800),
-      GDPData("Mutluluk", 1400),
-    ];
-    return chartData;
-  }
+List<GDPData> getChartData() {
+  final List<GDPData> chartData = [
+    GDPData("Korku", 1600),
+    GDPData("Şaşkınlık", 2490),
+    GDPData("Öfke", 2900),
+    GDPData("Antipati", 7500),
+    GDPData("İğrenme", 9565),
+    GDPData("Güven", 5000),
+    GDPData("Üzüntü", 7800),
+    GDPData("Mutluluk", 1400),
+  ];
+  return chartData;
 }
 
 class GDPData {
   GDPData(this.continent, this.gdp);
   final String continent;
-  final double gdp;
+  double gdp;
+}
+
+FutureBuilder<QuerySnapshot<Map<String, dynamic>>> getChartDataFuture() {
+  Query<Map<String, dynamic>> tests = FirebaseFirestore.instance
+      .collection('Tests')
+      .where('email', isEqualTo: user?.email);
+
+  return FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+    future: tests.get(),
+    builder: (BuildContext context,
+        AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+      print("AAA");
+      if (snapshot.hasError) {
+        return Text("Something went wrong");
+      }
+
+      if (snapshot.hasData && !snapshot.data!.docs.isNotEmpty) {
+        return Text("Document does not exist");
+      }
+
+      if (snapshot.connectionState == ConnectionState.done) {
+        Map<String, dynamic> data = snapshot.data!.docs as Map<String, dynamic>;
+        print("${data['name']}");
+        return Text("Full Name: ${data['name']} ${data['email']}");
+      }
+
+      return Text("loading");
+    },
+  );
+}
+
+List<GDPData> getChartDataSnapshot(
+    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+  List<GDPData> list = [
+    GDPData("Korku", 0),
+    GDPData("Şaşkınlık", 0),
+    GDPData("Öfke", 0),
+    GDPData("Antipati", 0),
+    GDPData("İğrenme", 0),
+    GDPData("Güven", 0),
+    GDPData("Üzüntü", 0),
+    GDPData("Mutluluk", 0)
+  ];
+  snapshot.data?.docs.forEach((element) {
+    for (int i = 0; i < 8; i++) {
+      if (list[i].continent.compareTo(element.data()['duygu']) == 0) {
+        list[i].gdp++;
+      }
+    }
+    //print("${element.data()['duygu']}");
+  });
+  return list;
+  //snapshot.data.docs.
 }

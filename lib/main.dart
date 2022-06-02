@@ -198,14 +198,15 @@ class MainPage1 extends StatelessWidget {
     );*/
     return MaterialApp(
       home: Container(
+        /*
         decoration: BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 stops: [0.3, 0.8],
-                colors: [Color(0xff06D6A0), Colors.cyan])),
+                colors: [Color(0xff06D6A0), Colors.cyan])),*/
         child: Scaffold(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Color(0xFF202b3c), //Colors.transparent,
           /*
           appBar: AppBar(
             elevation: 0,
@@ -223,16 +224,17 @@ class MainPage1 extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 TextButton(
-                  style: TextButton.styleFrom(
-                    primary: Colors.blue,
-                    //backgroundColor: Color(0xff06D6A0),
-                  ),
-                  onPressed: () {},
-                  child: Text(
-                    'Neurotech',
-                    //style: GoogleFonts.lemon(color: Colors.white, fontSize: 52),
-                  ),
-                ),
+                    style: TextButton.styleFrom(
+                      primary: Colors.blue,
+                      //backgroundColor: Color(0xff06D6A0),
+                    ),
+                    onPressed: () {},
+                    child: const Text('NeuroTech',
+                        style: TextStyle(color: Color(0xffe76f51), fontSize: 16)
+                        // GoogleFonts.lemon(color: Color(0xffe76f51), fontSize: 16),
+                        //GoogleFonts.lemon(color: Colors.white, fontSize: 15),
+                        //TextStyle(height: 5, fontSize: 20),
+                        )),
                 /*Wrap(
                   alignment: WrapAlignment.center,
                   children: [

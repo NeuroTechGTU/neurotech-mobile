@@ -5,13 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:neurotech_ceng/chart_previous_tests.dart';
+import 'package:neurotech_ceng/main.dart';
 import 'package:neurotech_ceng/movie_information.dart';
 import 'package:neurotech_ceng/profile_information.dart';
 import 'package:provider/provider.dart';
 
 import 'main.dart';
-import 'chart_anlik_data.dart';
 
 class GoogleSignInProvider extends ChangeNotifier {
   GoogleSignInAccount? _user;
@@ -352,83 +351,6 @@ class SaveUser extends StatelessWidget {
   }
 }
 
-class Anasayfa extends StatefulWidget {
-  @override
-  State<Anasayfa> createState() => _Anasayfa();
-}
-
-class _Anasayfa extends State<Anasayfa> {
-  bool check = false;
-
-  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
-      .collection('Tests')
-      .where('email', isEqualTo: user?.email)
-      .snapshots();
-  @override
-  Widget build(BuildContext context)
-      //saveTestResult("Erkek", 15, false, "nadir", "Kara Murat", "Mutluluk");
-      =>
-      Scaffold(
-          appBar: AppBar(
-              // Here we take the value from the MyHomePage object that was created by
-              // the App.build method, and use it to set our appbar title.
-              automaticallyImplyLeading: false,
-              title: Text("Neurotech"),
-              actions: <Widget>[
-                TextButton(
-                  style: TextButton.styleFrom(
-                      primary: Theme.of(context).colorScheme.onPrimary),
-                  child: Text("Logout"),
-                  //icon: const Icon(Icons.add_alert),
-                  //tooltip: 'Show Snackbar',
-                  onPressed: () {
-                    final provider = Provider.of<GoogleSignInProvider>(context,
-                        listen: false);
-                    provider.logout();
-                    Navigator.pop(context);
-                  },
-                )
-              ]),
-          body: Center(
-            child: Column(
-              children: [
-                /*ElevatedButton(
-                  onPressed: () {
-                    saveTestResult(
-                        "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");
-                    // Navigate back to first route when tapped.
-                  },
-                  child: const Text('Testi Bitir'),
-                ),*/
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DropDownDemo()),
-                    );
-                    /*saveTestResult(
-                        "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");*/
-                    // Navigate back to first route when tapped.
-                  },
-                  child: const Text('Testi Baslat'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => chart()),
-                    );
-                    /*saveTestResult(
-                        "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");*/
-                    // Navigate back to first route when tapped.
-                  },
-                  child: const Text('Önceki Testlerin'),
-                ),
-              ],
-            ),
-          ));
-}
-
 class TestEkrani extends StatefulWidget {
   @override
   State<TestEkrani> createState() => _TestEkrani();
@@ -520,11 +442,12 @@ class _Testler extends State<Testler> {
                 SizedBox(
                   height: 10,
                 ),
-                Text("Önceki Testler",
+                Text(
+                  "Önceki Testler",
                   style: TextStyle(
-                  color: Colors.white60,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w800),
+                      color: Colors.white60,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w800),
                 ),
                 SizedBox(
                   height: 10,

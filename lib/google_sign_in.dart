@@ -5,12 +5,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:neurotech_ceng/main.dart';
+//import 'package:neurotech_ceng/chart_previous_tests.dart';                      // TODO: ASDADA
+
 import 'package:neurotech_ceng/movie_information.dart';
 import 'package:neurotech_ceng/profile_information.dart';
 import 'package:provider/provider.dart';
 
+import 'chart_previous_tests.dart';
 import 'main.dart';
+//import 'chart_anlik_data.dart';                      // TODO: ASDADA
 
 class GoogleSignInProvider extends ChangeNotifier {
   GoogleSignInAccount? _user;
@@ -67,7 +70,10 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
             print(user?.email);
             var users = FirebaseFirestore.instance.collection('Users');
             return Scaffold(
+              backgroundColor: Color(0xff202b3c),
               appBar: AppBar(
+                  backgroundColor: Color(0xff1E293B),
+
                   // Here we take the value from the MyHomePage object that was created by
                   // the App.build method, and use it to set our appbar title.
                   title: Text("Neurotech"),
@@ -125,7 +131,7 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ProfilInfo()),
+                                  builder: (context) => Anasayfa()),
                             );
                             /*
                             Navigator.push(
@@ -140,7 +146,7 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
                                 builder: (context) => const SaveUser()),
                           );*/
 
-                          return Text("Document does not exist");
+                          return Text("");
                         }
 
                         if (snapshot.connectionState == ConnectionState.done) {
@@ -152,17 +158,16 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Anasayfa()),
+                                  builder: (context) => ProfilInfo()),
                             );
                           });
 
                           Map<String, dynamic> data =
                               snapshot.data!.data() as Map<String, dynamic>;
-                          return Text(
-                              "Full Name: ${data['email']} ${data['name']}");
+                          return CircularProgressIndicator();
                         }
 
-                        return Text("loading");
+                        return CircularProgressIndicator();
                       },
                     ),
 
@@ -351,6 +356,116 @@ class SaveUser extends StatelessWidget {
   }
 }
 
+class Anasayfa extends StatefulWidget {
+  @override
+  State<Anasayfa> createState() => _Anasayfa();
+}
+
+class _Anasayfa extends State<Anasayfa> {
+  bool check = false;
+
+  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
+      .collection('Tests')
+      .where('email', isEqualTo: user?.email)
+      .snapshots();
+  @override
+  Widget build(BuildContext context)
+      //saveTestResult("Erkek", 15, false, "nadir", "Kara Murat", "Mutluluk");
+      =>
+      Scaffold(
+          backgroundColor: Color(0xFF1e293b),
+          appBar: AppBar(
+              // Here we take the value from the MyHomePage object that was created by
+              // the App.build method, and use it to set our appbar title.
+              automaticallyImplyLeading: false,
+              backgroundColor: Color(0xFF1e293b),
+              title: Text("Neurotech"),
+              actions: <Widget>[
+                TextButton(
+                  style: TextButton.styleFrom(
+                      primary: Theme.of(context).colorScheme.onPrimary),
+                  child: Text("Logout"),
+                  //icon: const Icon(Icons.add_alert),
+                  //tooltip: 'Show Snackbar',
+                  onPressed: () {
+                    final provider = Provider.of<GoogleSignInProvider>(context,
+                        listen: false);
+                    provider.logout();
+                    Navigator.pop(context);
+                  },
+                )
+              ]),
+          body: Center(
+            child: Column(
+              children: [
+                /*ElevatedButton(
+                  onPressed: () {
+                    saveTestResult(
+                        "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");
+                    // Navigate back to first route when tapped.
+                  },
+                  child: const Text('Testi Bitir'),
+                ),*/
+                SizedBox(
+                  height: 200,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DropDownDemo()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.teal,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      elevation: 15.0,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: const Text(
+                        'Testi Başlat',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // TODO: ASDADA
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => chart()));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.teal,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      elevation: 15.0,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: const Text(
+                        'Önceki Testlerim',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ));
+}
+
 class TestEkrani extends StatefulWidget {
   @override
   State<TestEkrani> createState() => _TestEkrani();
@@ -429,11 +544,12 @@ class _Testler extends State<Testler> {
       //saveTestResult("Erkek", 15, false, "nadir", "Kara Murat", "Mutluluk");
       =>
       Scaffold(
-          backgroundColor: Colors.blueGrey,
+          backgroundColor: Color(0xFF202b3c),
           appBar: AppBar(
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
             //automaticallyImplyLeading: false,
+            backgroundColor: Color(0xFF202b3c),
             title: Text("Neurotech"),
           ),
           body: Center(

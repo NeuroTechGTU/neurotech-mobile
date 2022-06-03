@@ -230,6 +230,90 @@ class _ProfileInfo extends State<ProfilInfo> {
                 SizedBox(
                   height: 15,
                 ),
+                TextFormField(
+                  //controller: widget.nameController,
+                  cursorColor: Color(0xffE76F51),
+                  /* inputFormatters: [
+                    new LengthLimitingTextInputFormatter(24),
+                  ],*/
+                  decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0xffE76F51), width: 2),
+                    ),
+                    border: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: BorderSide(color: Color(0xffE76F51)),
+                    ),
+                    fillColor: Colors.white.withOpacity(0.97),
+                    filled: true, // dont forget this line
+                    hintText: "Kilo",
+                  ),
+                  textCapitalization: TextCapitalization.sentences,
+                  onChanged: (text) {
+                    setState(() {
+                      yasHatali = !isNumericUsing_tryParse(text);
+                      /*for(int i=0;i<text.length;i++){
+                          if(text[i]. > '9' || text[i] < '0'){
+                            yasHatali = true;
+                          }
+                        } else{
+                          yas = int.parse(text);
+                          yasHatali = false;
+                        }*/
+                      if (!yasHatali) yas = int.parse(text);
+                      //UserName = text;
+                      //you can access nameController in its scope to get
+                      // the value of text entered as shown below
+                      //UserName = nameController.text;
+                    });
+                  },
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                TextFormField(
+                  //controller: widget.nameController,
+                  cursorColor: Color(0xffE76F51),
+                  /* inputFormatters: [
+                    new LengthLimitingTextInputFormatter(24),
+                  ],*/
+                  decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color(0xffE76F51), width: 2),
+                    ),
+                    border: UnderlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: BorderSide(color: Color(0xffE76F51)),
+                    ),
+                    fillColor: Colors.white.withOpacity(0.97),
+                    filled: true, // dont forget this line
+                    hintText: "Boy",
+                  ),
+                  textCapitalization: TextCapitalization.sentences,
+                  onChanged: (text) {
+                    setState(() {
+                      yasHatali = !isNumericUsing_tryParse(text);
+                      /*for(int i=0;i<text.length;i++){
+                          if(text[i]. > '9' || text[i] < '0'){
+                            yasHatali = true;
+                          }
+                        } else{
+                          yas = int.parse(text);
+                          yasHatali = false;
+                        }*/
+                      if (!yasHatali) yas = int.parse(text);
+                      //UserName = text;
+                      //you can access nameController in its scope to get
+                      // the value of text entered as shown below
+                      //UserName = nameController.text;
+                    });
+                  },
+                ),
+                SizedBox(
+                  height: 15,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

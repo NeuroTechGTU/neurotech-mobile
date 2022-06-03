@@ -68,7 +68,11 @@ class _ProfileInfo extends State<ProfilInfo> {
   bool _isRadioSelected1 = false;
   bool _isRadioSelected2 = false;
   int yas = 0;
+  int kilo = 0, boy = 0;
   bool yasHatali = true;
+  bool kiloHatali = true;
+  bool boyHatali = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -210,7 +214,7 @@ class _ProfileInfo extends State<ProfilInfo> {
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: (text) {
                     setState(() {
-                      yasHatali = !isNumericUsing_tryParse(text);
+                      yasHatali = yasHatali && !isNumericUsing_tryParse(text);
                       /*for(int i=0;i<text.length;i++){
                           if(text[i]. > '9' || text[i] < '0'){
                             yasHatali = true;
@@ -247,12 +251,12 @@ class _ProfileInfo extends State<ProfilInfo> {
                     ),
                     fillColor: Colors.white.withOpacity(0.97),
                     filled: true, // dont forget this line
-                    hintText: "Kilo",
+                    hintText: "Kilo (kg)",
                   ),
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: (text) {
                     setState(() {
-                      yasHatali = !isNumericUsing_tryParse(text);
+                      kiloHatali = !isNumericUsing_tryParse(text);
                       /*for(int i=0;i<text.length;i++){
                           if(text[i]. > '9' || text[i] < '0'){
                             yasHatali = true;
@@ -261,7 +265,7 @@ class _ProfileInfo extends State<ProfilInfo> {
                           yas = int.parse(text);
                           yasHatali = false;
                         }*/
-                      if (!yasHatali) yas = int.parse(text);
+                      if (!kiloHatali) kilo = int.parse(text);
                       //UserName = text;
                       //you can access nameController in its scope to get
                       // the value of text entered as shown below
@@ -289,12 +293,12 @@ class _ProfileInfo extends State<ProfilInfo> {
                     ),
                     fillColor: Colors.white.withOpacity(0.97),
                     filled: true, // dont forget this line
-                    hintText: "Boy",
+                    hintText: "Boy (cm)",
                   ),
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: (text) {
                     setState(() {
-                      yasHatali = !isNumericUsing_tryParse(text);
+                      boyHatali = !isNumericUsing_tryParse(text);
                       /*for(int i=0;i<text.length;i++){
                           if(text[i]. > '9' || text[i] < '0'){
                             yasHatali = true;
@@ -303,7 +307,7 @@ class _ProfileInfo extends State<ProfilInfo> {
                           yas = int.parse(text);
                           yasHatali = false;
                         }*/
-                      if (!yasHatali) yas = int.parse(text);
+                      if (!boyHatali) boy = int.parse(text);
                       //UserName = text;
                       //you can access nameController in its scope to get
                       // the value of text entered as shown below
@@ -601,9 +605,10 @@ class _ProfileInfo extends State<ProfilInfo> {
                 ),
                 ElevatedButton(
                   onPressed: () {
+                    print("yasHatali" + yasHatali.toString());
                     if (!yasHatali && selected) {
                       saveUser(_isRadioSelected1 ? "Erkek" : "Kadın", yas,
-                          _isRadioSelected2, _chosenValue!);
+                          _isRadioSelected2, _chosenValue!, boy, kilo);
                       Navigator.pop(context); // kayıt olma sayfasını kaldır
                       Navigator.push(
                         context,

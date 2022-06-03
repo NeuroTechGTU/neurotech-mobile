@@ -2,8 +2,80 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:http/http.dart' as http;
+import 'package:neurotech_ceng/main.dart';
+
+List<String> datas = [];
+List<String> data1 = [];
+List<String> data2 = [];
+List<String> data3 = [];
+List<String> data4 = [];
+
+int age = 0;
+double bmi = 0;
+int weight = 0;
+int height = 0;
+
+Timer? _timer;
+int _start = 10;
+
+void startTimer() {
+  const oneSec = const Duration(seconds: 1);
+  _timer = new Timer.periodic(
+    oneSec,
+    (Timer timer) {
+      if (_start == 0) {
+        List<String> datas = [];
+        timer.cancel();
+      } else {
+        _start--;
+      }
+    },
+  );
+}
+
+@override
+void initState() async {
+  final docRef =
+      FirebaseFirestore.instance.collection('Users').doc(user?.email);
+  docRef.get().then(
+    (DocumentSnapshot doc) {
+      final data = doc.data() as Map<String, dynamic>;
+      //print("${data['kilo']} ${data['boy']}");
+      bmi = data['kilo'] / ((data['boy'] / 100) * (data['boy'] / 100));
+    },
+    onError: (e) => print("Error getting document: $e"),
+  );
+
+  print(bmi);
+  getData();
+}
+
+bool isStopped = false;
+getData() async {
+  Timer.periodic(Duration(seconds: 10), (timer) async {
+    // BURADA LİSTİ YOLLA!!!!!!!
+    Map<String, dynamic> toJson() => {
+          'bmi': bmi,
+          'age': age,
+          'data': datas,
+        };
+
+    String jsonUser = jsonEncode(datas);
+    var response = await http
+        .post(Uri.parse('https://jsonplaceholder.typicode.com/posts'), body: {
+      'bmi': bmi.toString(),
+      'age': age.toString(),
+      'data': datas.toString(),
+    });
+    print(jsonUser);
+    datas = [];
+    //print("every ten seconds you should see me");
+  });
+}
 
 class ChatPage extends StatefulWidget {
   final BluetoothDevice server;
@@ -219,8 +291,13 @@ class _ChatPage extends State<ChatPage> {
       try {
         connection!.output.add(Uint8List.fromList(utf8.encode(text + "\r\n")));
         await connection!.output.allSent;
-
+        /* if (timer < 10) {
+          datas.add(text);
+        } else {
+          List<String> datas = [];
+        }*/
         setState(() {
+          datas.add(text);
           messages.add(_Message(clientID, text));
         });
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,12 +9,34 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:http/http.dart' as http;
 import 'package:neurotech_ceng/main.dart';
 
-List<String> datas = [];
-List<String> data1 = [];
-List<String> data2 = [];
-List<String> data3 = [];
-List<String> data4 = [];
+List<int> datasResult = [];
+List<int> data1 = [];
+List<int> data2 = [];
+List<int> data3 = [];
+List<int> data4 = [];
 
+int sensor1_max = 0;
+int sensor2_max = 0;
+int sensor3_max = 0;
+int sensor4_max = 0;
+
+int sensor1_min = 0;
+int sensor2_min = 0;
+int sensor3_min = 0;
+int sensor4_min = 0;
+
+int sensor1_sum = 0;
+int sensor2_sum = 0;
+int sensor3_sum = 0;
+int sensor4_sum = 0;
+
+int sensor1_avg = 0;
+int sensor2_avg = 0;
+int sensor3_avg = 0;
+int sensor4_avg = 0;
+
+int flag = 0;
+int sex = 0;
 int age = 0;
 double bmi = 0;
 int weight = 0;
@@ -22,58 +45,120 @@ int height = 0;
 Timer? _timer;
 int _start = 10;
 
-void startTimer() {
-  const oneSec = const Duration(seconds: 1);
-  _timer = new Timer.periodic(
-    oneSec,
-    (Timer timer) {
-      if (_start == 0) {
-        List<String> datas = [];
-        timer.cancel();
-      } else {
-        _start--;
-      }
-    },
-  );
-}
-
-@override
-void initState() async {
-  final docRef =
-      FirebaseFirestore.instance.collection('Users').doc(user?.email);
-  docRef.get().then(
-    (DocumentSnapshot doc) {
-      final data = doc.data() as Map<String, dynamic>;
-      //print("${data['kilo']} ${data['boy']}");
-      bmi = data['kilo'] / ((data['boy'] / 100) * (data['boy'] / 100));
-    },
-    onError: (e) => print("Error getting document: $e"),
-  );
-
-  print(bmi);
-  getData();
-}
-
 bool isStopped = false;
 getData() async {
   Timer.periodic(Duration(seconds: 10), (timer) async {
+    print("every ten seconds you should see me");
+    if (data1.length != 0 &&
+        data2.length != 0 &&
+        data3.length != 0 &&
+        data4.length != 0) {
+      sensor1_max = data1.reduce(max);
+      sensor2_max = data2.reduce(max);
+      sensor3_max = data3.reduce(max);
+      sensor4_max = data4.reduce(max);
+
+      sensor1_min = data1.reduce(min);
+      sensor2_min = data2.reduce(min);
+      sensor3_min = data3.reduce(min);
+      sensor4_min = data4.reduce(min);
+
+      sensor1_sum = data1.reduce((value, element) => value + element);
+      sensor2_sum = data2.reduce((value, element) => value + element);
+      sensor3_sum = data3.reduce((value, element) => value + element);
+      sensor4_sum = data4.reduce((value, element) => value + element);
+
+      sensor1_avg = (sensor1_sum / data1.length).toInt();
+      sensor2_avg = (sensor2_sum / data2.length).toInt();
+      sensor3_avg = (sensor3_sum / data3.length).toInt();
+      sensor4_avg = (sensor4_sum / data4.length).toInt();
+    }
     // BURADA LİSTİ YOLLA!!!!!!!
     Map<String, dynamic> toJson() => {
-          'bmi': bmi,
+          'sex': sex,
           'age': age,
-          'data': datas,
+          'bmi': bmi,
+          'sensor4_avg': sensor4_avg,
+          'sensor4_max': sensor4_max,
+          'sensor4_min': sensor4_min,
+          'sensor3_avg': sensor3_avg,
+          'sensor3_max': sensor3_max,
+          'sensor3_min': sensor3_min,
+          'sensor2_avg': sensor2_avg,
+          'sensor2_max': sensor2_max,
+          'sensor2_min': sensor2_min,
+          'sensor1_avg': sensor1_avg,
+          'sensor1_max': sensor1_max,
+          'sensor1_min': sensor1_min,
+          'model_num': 0
         };
-        
-    String jsonUser = jsonEncode(datas);
-    var response = await http
-        .post(Uri.parse('https://neurotech-model.azurewebsites.net/api/HttpTrigger1?code=H_b77QaGW6eeF8UvewZONUSBFuBUfZ1R9yGftNQKHKXEAzFuGLjiqQ=='), body: {
-      'bmi': bmi.toString(),
-      'age': age.toString(),
-      'data': datas.toString(),
-    });
-    print(jsonUser);
-    datas = [];
-    //print("every ten seconds you should see me");
+    Map<String, dynamic> json = toJson();
+
+    List<dynamic> data = [
+      sex,
+      age,
+      bmi,
+      sensor4_avg,
+      sensor4_max,
+      sensor4_min,
+      sensor3_avg,
+      sensor3_max,
+      sensor3_min,
+      sensor2_avg,
+      sensor2_max,
+      sensor2_min,
+      sensor1_avg,
+      sensor1_max,
+      sensor1_min
+    ];
+
+    String jsonTags = jsonEncode(data);
+    print("${json['age']}");
+    print(jsonTags);
+    var response = await http.post(
+        Uri.parse(
+            'https://neurotech-model.azurewebsites.net/api/HttpTrigger1?code=H_b77QaGW6eeF8UvewZONUSBFuBUfZ1R9yGftNQKHKXEAzFuGLjiqQ=='),
+        body: {
+          'data': [
+            sex,
+            age,
+            bmi,
+            sensor4_avg,
+            sensor4_max,
+            sensor4_min,
+            sensor3_avg,
+            sensor3_max,
+            sensor3_min,
+            sensor2_avg,
+            sensor2_max,
+            sensor2_min,
+            sensor1_avg,
+            sensor1_max,
+            sensor1_min,
+          ],
+          // 'model_num': 0, //doldurrrr,
+        });
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    print(response);
+
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    print(sensor1_max);
+    print(sensor1_min);
+    print(sensor1_sum);
+    print(sensor1_avg);
+    print(sensor4_max);
+    print(sensor4_min);
+    print(sensor4_sum);
+    print(sensor4_avg);
+    data1 = [];
+    data2 = [];
+    data3 = [];
+    data4 = [];
   });
 }
 
@@ -96,6 +181,23 @@ class _Message {
 class _ChatPage extends State<ChatPage> {
   static final clientID = 0;
   BluetoothConnection? connection;
+
+  var a = FirebaseFirestore.instance
+      .collection('Users')
+      .where('email', isEqualTo: user?.email)
+      .get()
+      .then((snapshot) => snapshot.docs.forEach((document) {
+            age = document.data()['yas'];
+            height = document.data()['boy'];
+            sex = (document.data()['cinsiyet'][0] == 'E') ? 0 : 1;
+            weight = document.data()['kilo'];
+            /*print(sex +
+                                    age.toString() +
+                                    " " +
+                                    weight.toString() +
+                                    " " +
+                                    height.toString());*/
+          }));
 
   List<_Message> messages = List<_Message>.empty(growable: true);
   String _messageBuffer = '';
@@ -141,6 +243,8 @@ class _ChatPage extends State<ChatPage> {
       print('Cannot connect, exception occured');
       print(error);
     });
+    print("zubultamo\n");
+    getData();
   }
 
   @override
@@ -198,6 +302,36 @@ class _ChatPage extends State<ChatPage> {
                   controller: listScrollController,
                   children: list),
             ),
+            /*ElevatedButton(
+                onPressed: () {
+                  print("test bitir");
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => anlikChart()),
+                  );
+                  // saveTestResult(chosenValue!, filminAdi!, /*sonuc*/) // TODO: BURAYI ACCCC
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.teal.shade600,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  elevation: 4.0,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Text(
+                    'Testi Bitir',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ),*/
+            /* ListView(
+                  padding: const EdgeInsets.all(12.0),
+                  controller: listScrollController,
+                  children: N/*list*/),*/
+
             Row(
               children: <Widget>[
                 Flexible(
@@ -263,7 +397,22 @@ class _ChatPage extends State<ChatPage> {
     String dataString = String.fromCharCodes(buffer);
     int index = buffer.indexOf(13);
     if (~index != 0) {
+      print("asdasdsadasd");
+
       setState(() {
+        data.forEach((element) {
+          if (flag % 4 == 0) {
+            data1.add(element);
+            print("girdiimmmmm");
+          } else if (flag % 4 == 1)
+            data2.add(element);
+          else if (flag % 4 == 2)
+            data3.add(element);
+          else if (flag % 4 == 3)
+            data4.add(element); //data4.add(int.parse(text));
+          flag++;
+        });
+        print(data1.toString());
         messages.add(
           _Message(
             1,
@@ -286,7 +435,10 @@ class _ChatPage extends State<ChatPage> {
   void _sendMessage(String text) async {
     text = text.trim();
     textEditingController.clear();
-
+    print("09999999999");
+    print("09999999999");
+    print("09999999999");
+    print("09999999999");
     if (text.length > 0) {
       try {
         connection!.output.add(Uint8List.fromList(utf8.encode(text + "\r\n")));
@@ -297,7 +449,6 @@ class _ChatPage extends State<ChatPage> {
           List<String> datas = [];
         }*/
         setState(() {
-          datas.add(text);
           messages.add(_Message(clientID, text));
         });
 

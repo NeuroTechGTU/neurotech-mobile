@@ -73,9 +73,6 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
               backgroundColor: Color(0xff202b3c),
               appBar: AppBar(
                   backgroundColor: Color(0xff1E293B),
-
-                  // Here we take the value from the MyHomePage object that was created by
-                  // the App.build method, and use it to set our appbar title.
                   title: Text("Neurotech"),
                   actions: <Widget>[
                     TextButton(
@@ -93,25 +90,8 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
                     )
                   ]),
               body: Center(
-                // Center is a layout widget. It takes a single child and positions it
-                // in the middle of the parent.
                 child: Column(
-                  // Column is also a layout widget. It takes a list of children and
-                  // arranges them vertically. By default, it sizes itself to fit its
-                  // children horizontally, and tries to be as tall as its parent.
-                  //
-                  // Invoke "debug painting" (press "p" in the console, choose the
-                  // "Toggle Debug Paint" action from the Flutter Inspector in Android
-                  // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-                  // to see the wireframe for each widget.
-                  //
-                  // Column has various properties to control how it sizes itself and
-                  // how it positions its children. Here we use mainAxisAlignment to
-                  // center the children vertically; the main axis here is the vertical
-                  // axis because Columns are vertical (the cross axis would be
-                  // horizontal).
                   mainAxisAlignment: MainAxisAlignment.center,
-
                   children: <Widget>[
                     FutureBuilder<DocumentSnapshot>(
                       future: users.doc(user?.email).get(),
@@ -131,7 +111,7 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Anasayfa()),
+                                  builder: (context) => ProfilInfo()),
                             );
                             /*
                             Navigator.push(
@@ -146,7 +126,7 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
                                 builder: (context) => const SaveUser()),
                           );*/
 
-                          return Text("");
+                          return CircularProgressIndicator();
                         }
 
                         if (snapshot.connectionState == ConnectionState.done) {
@@ -158,7 +138,7 @@ class _googleLoginPage2State extends State<googleLoginPage2> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ProfilInfo()),
+                                  builder: (context) => Anasayfa()),
                             );
                           });
 
@@ -254,11 +234,10 @@ class MyCustomFormState extends State<MyCustomForm> {
 }
 
 Future<void> saveUser(String cinsiyet, int yas, bool duygusalMisin,
-    String filmIzlemeAliskanligi) async {
+    String filmIzlemeAliskanligi, int boy, int kilo) async {
   /*if (_loginState != ApplicationLoginState.loggedIn) {
     throw Exception('Must be logged in');
   }*/
-
   return FirebaseFirestore.instance
       .collection('Users')
       .doc(user?.email)
@@ -270,7 +249,9 @@ Future<void> saveUser(String cinsiyet, int yas, bool duygusalMisin,
     'cinsiyet': cinsiyet,
     'yas': yas,
     'duygusalMisin': duygusalMisin,
-    'filmIzlemeAliskanligi': filmIzlemeAliskanligi
+    'filmIzlemeAliskanligi': filmIzlemeAliskanligi,
+    'boy': boy,
+    'kilo': kilo
   });
 }
 
@@ -339,7 +320,7 @@ class SaveUser extends StatelessWidget {
             yas = 20;
             duygusalMisin = true;
             filmIzlemeAliskanligi = "Sık";
-            saveUser(cinsiyet, yas, duygusalMisin, filmIzlemeAliskanligi);
+            //saveUser(cinsiyet, yas, duygusalMisin, filmIzlemeAliskanligi);
             // burda ana sayfaya gecebiliriz
             //Navigator.pop(context);
             Navigator.pop(context); // kayıt olma sayfasını kaldır

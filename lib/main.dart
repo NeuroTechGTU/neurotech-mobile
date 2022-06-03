@@ -371,7 +371,7 @@ class MainPage1 extends StatelessWidget {
                           children: <Widget>[
                             FaIcon(FontAwesomeIcons.google, color: Colors.blue),
                             Text(
-                              "  API Sayfası",
+                              "Kullanmaya Başla!",
                               /*style: GoogleFonts.lemon(
                                   color: Colors.red, fontSize: 16),*/
                             ),

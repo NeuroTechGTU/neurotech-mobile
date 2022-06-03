@@ -63,10 +63,10 @@ getData() async {
           'age': age,
           'data': datas,
         };
-
+        
     String jsonUser = jsonEncode(datas);
     var response = await http
-        .post(Uri.parse('https://jsonplaceholder.typicode.com/posts'), body: {
+        .post(Uri.parse('https://neurotech-model.azurewebsites.net/api/HttpTrigger1?code=H_b77QaGW6eeF8UvewZONUSBFuBUfZ1R9yGftNQKHKXEAzFuGLjiqQ=='), body: {
       'bmi': bmi.toString(),
       'age': age.toString(),
       'data': datas.toString(),

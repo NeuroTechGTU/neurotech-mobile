@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'bluetooth/BackgroundCollectingTask.dart';
 import 'bluetooth/ChatPage.dart';
 import 'bluetooth/SelectBondedDevicePage.dart';
 import 'chart_previous_tests.dart';
 import 'google_sign_in.dart';
-import 'movie_information.dart';
 
 BluetoothState _bluetoothState = BluetoothState.UNKNOWN;
 User? user = null;
@@ -503,7 +503,8 @@ class _BluetoothPage extends State<BluetoothPage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => DropDownDemo()),
+                      MaterialPageRoute(
+                          builder: (context) => PieChart() /*DropDownDemo()*/),
                     );
                     /*saveTestResult(
                         "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");*/
@@ -526,4 +527,58 @@ class _BluetoothPage extends State<BluetoothPage> {
               ],
             ),
           ));
+}
+
+class PieChart extends StatefulWidget {
+  @override
+  State<PieChart> createState() => _PieChart();
+}
+
+class _PieChart extends State<PieChart> {
+  late TooltipBehavior _tooltipBehavior;
+
+  @override
+  void initState() {
+    _tooltipBehavior = TooltipBehavior(enable: true);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.white.withOpacity(0.86),
+        appBar: AppBar(
+          title: const Text('Test Sonucu'),
+          backgroundColor: Color(0xff1E293B),
+        ),
+        body: Center(
+            child: Container(
+                child: SfCircularChart(
+                    // Enables the legend
+                    legend: Legend(isVisible: true),
+                    tooltipBehavior: _tooltipBehavior,
+                    series: <CircularSeries<SalesData, String>>[
+              // Initialize line series
+              PieSeries<SalesData, String>(
+                  dataSource: [
+                    // Bind data source
+                    SalesData('Mutluluk', 35),
+                    SalesData('Üzüntü', 28),
+                    SalesData('Öfke', 40),
+                    SalesData('Antipati', 32),
+                    SalesData('İğrenme', 34),
+                    SalesData('Korku', 50)
+                  ],
+                  xValueMapper: (SalesData sales, _) => sales.year,
+                  yValueMapper: (SalesData sales, _) => sales.sales,
+                  name: 'Duygu',
+                  dataLabelSettings: DataLabelSettings(isVisible: true))
+            ]))));
+  }
+}
+
+class SalesData {
+  SalesData(this.year, this.sales);
+  final String year;
+  final double sales;
 }

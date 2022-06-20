@@ -1,14 +1,9 @@
 /// Package imports
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 /// Chart import
 import 'package:syncfusion_flutter_charts/charts.dart';
-
-
-
-
-
 
 class anlikChart extends StatefulWidget {
   const anlikChart({Key? key}) : super(key: key);
@@ -16,22 +11,32 @@ class anlikChart extends StatefulWidget {
   _anlikChart createState() => _anlikChart();
 }
 
-class _anlikChart extends State<anlikChart>  {
- List<ChartData>? chartData;
+class _anlikChart extends State<anlikChart> {
+  List<ChartData>? chartData;
 
- @override
- void initState() {
- chartData = <ChartData>[
-   ChartData(2005, 21,1,10,45,50,55,60,65),
-   ChartData(2006, 24,2,15,70,75,80,85,90),
-   ChartData(2007, 36,3,20,95,105,110,115,150),
-   ChartData(2008, 38,4,25,120,125,130,135,155),
-   ChartData(2009, 54,5,30,140,145,150,155,160),
-   ChartData(2010, 57,6,35,165,170,175,180,185),
-   ChartData(2011, 70,7,40,190,195,200,205,210,)
- ];
- super.initState();
- }
+  @override
+  void initState() {
+    chartData = <ChartData>[
+      ChartData(2005, 21, 1, 10, 45, 50, 55, 60, 65),
+      ChartData(2006, 24, 2, 15, 70, 75, 80, 85, 90),
+      ChartData(2007, 36, 3, 20, 95, 105, 110, 115, 150),
+      ChartData(2008, 38, 4, 25, 120, 125, 130, 135, 155),
+      ChartData(2009, 54, 5, 30, 140, 145, 150, 155, 160),
+      ChartData(2010, 57, 6, 35, 165, 170, 175, 180, 185),
+      ChartData(
+        2011,
+        70,
+        7,
+        40,
+        190,
+        195,
+        200,
+        205,
+        210,
+      )
+    ];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +44,9 @@ class _anlikChart extends State<anlikChart>  {
         body: Center(
             child: Container(
                 child: SfCartesianChart(
-                    series: _getDefaultLineSeries(),
-                    tooltipBehavior: TooltipBehavior(enable: true),
-                  /*<ChartSeries>[
+      series: _getDefaultLineSeries(),
+      tooltipBehavior: TooltipBehavior(enable: true),
+      /*<ChartSeries>[
                       // Renders line chart
                       LineSeries<ChartData, int>(
                           dataSource: chartData!,
@@ -49,11 +54,10 @@ class _anlikChart extends State<anlikChart>  {
                           yValueMapper: (ChartData data, _) => data.y
                       )
                     ]*/
-                )
-            )
-        )
-    );
+    ))));
   }
+
+  //Todo degissss 8 duygu var burada
   List<LineSeries<ChartData, num>> _getDefaultLineSeries() {
     return <LineSeries<ChartData, num>>[
       LineSeries<ChartData, num>(
@@ -122,10 +126,11 @@ class _anlikChart extends State<anlikChart>  {
           markerSettings: const MarkerSettings(isVisible: true)),
     ];
   }
-
 }
+
 class ChartData {
-  ChartData(this.x, this.y, this.y2,this.y3,this.y4,this.y5,this.y6,this.y7,this.y8);
+  ChartData(this.x, this.y, this.y2, this.y3, this.y4, this.y5, this.y6,
+      this.y7, this.y8);
   final int x;
   final double y;
   final double y2;

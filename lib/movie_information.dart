@@ -5,9 +5,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
-import 'bluetooth/BackgroundCollectingTask.dart';
 import 'bluetooth/ChatPage.dart';
 import 'bluetooth/SelectBondedDevicePage.dart';
+import 'catalog.dart';
+import 'itemWidget.dart';
 import 'main.dart';
 
 BluetoothState _bluetoothState = BluetoothState.UNKNOWN;
@@ -19,6 +20,10 @@ class DropDownDemo extends StatefulWidget {
 
 String? filminAdi;
 String? filminTuru;
+final _controller = TextEditingController();
+void autoFill(String name) {
+  _controller.text = name;
+}
 
 class _DropDownDemoState extends State<DropDownDemo> {
   String? _chosenValue;
@@ -46,7 +51,7 @@ class _DropDownDemoState extends State<DropDownDemo> {
   Timer? _discoverableTimeoutTimer;
   int _discoverableTimeoutSecondsLeft = 0;
 
-  BackgroundCollectingTask? _collectingTask;
+  //BackgroundCollectingTask? _collectingTask;
 
   bool _autoAcceptPairingRequests = false;
   @override
@@ -94,8 +99,9 @@ class _DropDownDemoState extends State<DropDownDemo> {
   @override
   void dispose() {
     FlutterBluetoothSerial.instance.setPairingRequestHandler(null);
-    _collectingTask?.dispose();
+    //_collectingTask?.dispose();
     _discoverableTimeoutTimer?.cancel();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -147,7 +153,9 @@ class _DropDownDemoState extends State<DropDownDemo> {
                   },
                 ),*/
                     TextFormField(
+                  controller: _controller,
                   //controller: widget.nameController,
+
                   cursorColor: Color(0xffE76F51),
                   /* inputFormatters: [
                   new LengthLimitingTextInputFormatter(24),
@@ -310,6 +318,13 @@ class _DropDownDemoState extends State<DropDownDemo> {
                   ),
                 ),
               ),
+              Expanded(
+                child: ListView.builder(
+                    itemCount: CatalogModel.items.length,
+                    itemBuilder: (context, index) {
+                      return ItemWidget(item: CatalogModel.items[index]);
+                    }),
+              )
             ])),
       ),
     );

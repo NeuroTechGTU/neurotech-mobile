@@ -20,7 +20,7 @@ class DropDownDemo extends StatefulWidget {
 
 String? filminAdi;
 String? filminTuru;
-final _controller = TextEditingController();
+TextEditingController _controller = TextEditingController();
 void autoFill(String name) {
   _controller.text = name;
 }
@@ -101,7 +101,7 @@ class _DropDownDemoState extends State<DropDownDemo> {
     FlutterBluetoothSerial.instance.setPairingRequestHandler(null);
     //_collectingTask?.dispose();
     _discoverableTimeoutTimer?.cancel();
-    _controller.dispose();
+    //_controller.dispose();
     super.dispose();
   }
 
@@ -119,18 +119,22 @@ class _DropDownDemoState extends State<DropDownDemo> {
         child: Container(
             margin: EdgeInsets.all(10),
             child: Column(children: [
-              SizedBox(
-                height: 100,
-              ),
-              Text(
+              /*Text(
                 "Film Bilgileri",
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 30,
                     fontWeight: FontWeight.w800),
+              ),*/
+              Expanded(
+                child: ListView.builder(
+                    itemCount: CatalogModel.items.length,
+                    itemBuilder: (context, index) {
+                      return ItemWidget(item: CatalogModel.items[index]);
+                    }),
               ),
               SizedBox(
-                height: 50,
+                height: 20,
               ),
               Container(
                 width: 300.0,
@@ -182,9 +186,9 @@ class _DropDownDemoState extends State<DropDownDemo> {
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 10,
               ),
-              Container(
+              /* Container(
                 height: 40,
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 decoration: BoxDecoration(
@@ -234,7 +238,7 @@ class _DropDownDemoState extends State<DropDownDemo> {
               ),
               SizedBox(
                 height: 20,
-              ),
+              ),*/
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -318,13 +322,6 @@ class _DropDownDemoState extends State<DropDownDemo> {
                   ),
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                    itemCount: CatalogModel.items.length,
-                    itemBuilder: (context, index) {
-                      return ItemWidget(item: CatalogModel.items[index]);
-                    }),
-              )
             ])),
       ),
     );

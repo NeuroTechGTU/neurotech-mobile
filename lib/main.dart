@@ -14,6 +14,7 @@ import 'bluetooth/ChatPage.dart';
 import 'bluetooth/SelectBondedDevicePage.dart';
 import 'chart_previous_tests.dart';
 import 'google_sign_in.dart';
+import 'movie_information.dart';
 
 BluetoothState _bluetoothState = BluetoothState.UNKNOWN;
 User? user = null;
@@ -504,7 +505,7 @@ class _BluetoothPage extends State<BluetoothPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => PieChart() /*DropDownDemo()*/),
+                          builder: (context) =>  DropDownDemo()),
                     );
                     /*saveTestResult(
                         "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");*/

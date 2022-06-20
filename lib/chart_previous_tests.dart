@@ -220,11 +220,9 @@ class _chart extends State<chart> {
 List<GDPData> getChartData() {
   final List<GDPData> chartData = [
     GDPData("Korku", 1600),
-    GDPData("Şaşkınlık", 2490),
     GDPData("Öfke", 2900),
     GDPData("Antipati", 7500),
     GDPData("İğrenme", 9565),
-    GDPData("Güven", 5000),
     GDPData("Üzüntü", 7800),
     GDPData("Mutluluk", 1400),
   ];
@@ -270,16 +268,14 @@ List<GDPData> getChartDataSnapshot(
     AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
   List<GDPData> list = [
     GDPData("Korku", 0),
-    GDPData("Şaşkınlık", 0),
     GDPData("Öfke", 0),
     GDPData("Antipati", 0),
     GDPData("İğrenme", 0),
-    GDPData("Güven", 0),
     GDPData("Üzüntü", 0),
     GDPData("Mutluluk", 0)
   ];
   snapshot.data?.docs.forEach((element) {
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 6; i++) {
       if (list[i].continent.compareTo(element.data()['duygu']) == 0) {
         list[i].gdp++;
       }

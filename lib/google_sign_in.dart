@@ -422,7 +422,7 @@ class _Anasayfa extends State<Anasayfa> {
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: ElevatedButton(
                     onPressed: () {
-                      // TODO: ASDADA
+                      // TODO: DOĞRU YER
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => chart()));
                     },

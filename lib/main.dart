@@ -504,8 +504,7 @@ class _BluetoothPage extends State<BluetoothPage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) =>  DropDownDemo()),
+                      MaterialPageRoute(builder: (context) => DropDownDemo()),
                     );
                     /*saveTestResult(
                         "erkek", 65, false, "nadiren", "Kara Murat", "Heyecan");*/
@@ -530,6 +529,48 @@ class _BluetoothPage extends State<BluetoothPage> {
           ));
 }
 
+List<double> signals = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+String cevap = "";
+List<double> giveRates(List<double> signals) {
+  double sum = 0.0;
+  for (int i = 0; i < signals.length; i++) {
+    sum += signals[i];
+  }
+  List<double> rates = [0, 0, 0, 0, 0, 0];
+  double sumOfRates = 0.0;
+  for (int i = 0; i < signals.length; i++) {
+    rates[i] = (signals[i] / sum * 100);
+    rates[i] = double.parse(rates[i].toStringAsFixed(2));
+    sumOfRates += rates[i];
+  }
+  print(rates.toString());
+
+  int num = 0;
+  double max = rates[0];
+  for (int i = 1; i < rates.length; i++) {
+    if (rates[i] > max) {
+      max = rates[i];
+      num = i;
+    }
+  }
+  if (num == 0) {
+    cevap = "Öfke";
+  } else if (num == 1) {
+    cevap = "Antipati";
+  } else if (num == 2) {
+    cevap = "İğrenme";
+  } else if (num == 3) {
+    cevap = "Korku";
+  } else if (num == 4) {
+    cevap = "Mutluluk";
+  } else if (num == 5) {
+    cevap = "Üzüntü";
+  }
+
+  print("sum:" + sum.toString() + "sumOfRates" + sumOfRates.toString());
+  return rates;
+}
+
 class PieChart extends StatefulWidget {
   @override
   State<PieChart> createState() => _PieChart();
@@ -542,7 +583,10 @@ class _PieChart extends State<PieChart> {
   void initState() {
     _tooltipBehavior = TooltipBehavior(enable: true);
     super.initState();
+    saveTestResult(" ", filminAdi!, cevap);
   }
+
+  List<double> rates = giveRates(signals);
 
   @override
   Widget build(BuildContext context) {
@@ -563,12 +607,12 @@ class _PieChart extends State<PieChart> {
               PieSeries<SalesData, String>(
                   dataSource: [
                     // Bind data source
-                    SalesData('Mutluluk', 35),
-                    SalesData('Üzüntü', 28),
-                    SalesData('Öfke', 40),
-                    SalesData('Antipati', 32),
-                    SalesData('İğrenme', 34),
-                    SalesData('Korku', 50)
+                    SalesData('Öfke', rates[0]),
+                    SalesData('Antipati', rates[1]),
+                    SalesData('İğrenme', rates[2]),
+                    SalesData('Korku', rates[3]),
+                    SalesData('Mutluluk', rates[4]),
+                    SalesData('Üzüntü', rates[5])
                   ],
                   xValueMapper: (SalesData sales, _) => sales.year,
                   yValueMapper: (SalesData sales, _) => sales.sales,

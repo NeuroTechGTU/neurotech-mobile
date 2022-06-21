@@ -3,7 +3,7 @@ class CatalogModel {
     Item(
         id: 1,
         name: "Umudunu Kaybetme",
-        desc: "Hüzün",
+        desc: "Üzüntü",
         price: 999,
         color: "#33505a",
         image:
@@ -91,7 +91,7 @@ class CatalogModel {
     Item(
         id: 12,
         name: "Çizgili Pijamalı Çocuk",
-        desc: "Hüzün",
+        desc: "Üzüntü",
         price: 799,
         color: "#33505a",
         image:
@@ -115,4 +115,3 @@ class Item {
       required this.color,
       required this.image});
 }
-

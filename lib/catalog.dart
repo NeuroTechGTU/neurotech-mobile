@@ -99,16 +99,6 @@ class CatalogModel {
   ];
 }
 
-
-    
-        
-          
-    
-
-        
-    
-    @@ -115,4 +59,3 @@ class Item {
-  
 class Item {
   final int id;
   final String name;
@@ -122,5 +112,6 @@ class Item {
       required this.desc,
       required this.price,
       required this.color,
-      required this.image});
+      required this.image}
+  );
 }

@@ -73,26 +73,11 @@ getData() async {
       sensor3_avg = (sensor3_sum / data3.length).toInt();
       sensor4_avg = (sensor4_sum / data4.length).toInt();
     }
-    // BURADA LİSTİ YOLLA!!!!!!!
-    Map<String, dynamic> toJson() => {
-          'sex': sex,
-          'age': age,
-          'bmi': bmi,
-          'sensor4_avg': sensor4_avg,
-          'sensor4_max': sensor4_max,
-          'sensor4_min': sensor4_min,
-          'sensor3_avg': sensor3_avg,
-          'sensor3_max': sensor3_max,
-          'sensor3_min': sensor3_min,
-          'sensor2_avg': sensor2_avg,
-          'sensor2_max': sensor2_max,
-          'sensor2_min': sensor2_min,
-          'sensor1_avg': sensor1_avg,
-          'sensor1_max': sensor1_max,
-          'sensor1_min': sensor1_min,
-          'model_num': 0
-        };
-    Map<String, dynamic> json = toJson();
+
+    data1.clear();
+    data2.clear();
+    data3.clear();
+    data4.clear();
 
     List<dynamic> data = [
       sex,
@@ -111,37 +96,34 @@ getData() async {
       sensor1_max,
       sensor1_min
     ];
+    final Map<dynamic, dynamic> map = {"data": data, "model_num": 0};
 
-    String jsonTags = jsonEncode(data);
-    print("${json['age']}");
-    print(jsonTags);
     var response = await http.post(
         Uri.parse(
             'https://neurotech-model.azurewebsites.net/api/HttpTrigger1?code=H_b77QaGW6eeF8UvewZONUSBFuBUfZ1R9yGftNQKHKXEAzFuGLjiqQ=='),
-        body: {
-          'data': [
-            sex,
-            age,
-            bmi,
-            sensor4_avg,
-            sensor4_max,
-            sensor4_min,
-            sensor3_avg,
-            sensor3_max,
-            sensor3_min,
-            sensor2_avg,
-            sensor2_max,
-            sensor2_min,
-            sensor1_avg,
-            sensor1_max,
-            sensor1_min,
-          ],
-          // 'model_num': 0, //doldurrrr,
-        });
+        body: jsonEncode(map));
+    print(jsonEncode(map).toString());
     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-    print(response);
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA sena\n");
+   // print(jsonDecode(response.body));
+    String  pdfText= await json.decode(json.encode(response.body))  ;
+
+    var datelist = pdfText.split("  ");
+    var datelist2 = datelist[4].split(" ");
+    var datelist3 = datelist[5].split(" ");
+    var datelist4 = datelist[0].split("[[");
+    var datelist5 = datelist3[1].split("]");
+    print(datelist4[1]);
+    print(datelist[1]);
+    print(datelist[2]);
+    print(datelist[3]);
+    print(datelist2[0]);
+    print(datelist2[1]);
+    print(datelist3[0]);
+    print(datelist5[0]);
+   // print(pdfText.split(" "));
 
     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
@@ -187,23 +169,23 @@ class _ChatPage extends State<ChatPage> {
       .where('email', isEqualTo: user?.email)
       .get()
       .then((snapshot) => snapshot.docs.forEach((document) {
-            age = document.data()['yas'];
-            height = document.data()['boy'];
-            sex = (document.data()['cinsiyet'][0] == 'E') ? 0 : 1;
-            weight = document.data()['kilo'];
-            /*print(sex +
+    age = document.data()['yas'];
+    height = document.data()['boy'];
+    sex = (document.data()['cinsiyet'][0] == 'E') ? 0 : 1;
+    weight = document.data()['kilo'];
+    /*print(sex +
                                     age.toString() +
                                     " " +
                                     weight.toString() +
                                     " " +
                                     height.toString());*/
-          }));
+  }));
 
   List<_Message> messages = List<_Message>.empty(growable: true);
   String _messageBuffer = '';
 
   final TextEditingController textEditingController =
-      new TextEditingController();
+  new TextEditingController();
   final ScrollController listScrollController = new ScrollController();
 
   bool isConnecting = true;
@@ -266,7 +248,7 @@ class _ChatPage extends State<ChatPage> {
         children: <Widget>[
           Container(
             child: Text(
-                (text) {
+                    (text) {
                   return text == '/shrug' ? '¯\\_(ツ)_/¯' : text;
                 }(_message.text.trim()),
                 style: TextStyle(color: Colors.white)),
@@ -275,7 +257,7 @@ class _ChatPage extends State<ChatPage> {
             width: 222.0,
             decoration: BoxDecoration(
                 color:
-                    _message.whom == clientID ? Colors.blueAccent : Colors.grey,
+                _message.whom == clientID ? Colors.blueAccent : Colors.grey,
                 borderRadius: BorderRadius.circular(7.0)),
           ),
         ],
@@ -291,8 +273,8 @@ class _ChatPage extends State<ChatPage> {
           title: (isConnecting
               ? Text('Connecting chat to ' + serverName + '...')
               : isConnected
-                  ? Text('Live chat with ' + serverName)
-                  : Text('Chat log with ' + serverName))),
+              ? Text('Live chat with ' + serverName)
+              : Text('Chat log with ' + serverName))),
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -344,8 +326,8 @@ class _ChatPage extends State<ChatPage> {
                         hintText: isConnecting
                             ? 'Wait until connected...'
                             : isConnected
-                                ? 'Type your message...'
-                                : 'Chat got disconnected',
+                            ? 'Type your message...'
+                            : 'Chat got disconnected',
                         hintStyle: const TextStyle(color: Colors.grey),
                       ),
                       enabled: isConnected,
@@ -418,7 +400,7 @@ class _ChatPage extends State<ChatPage> {
             1,
             backspacesCounter > 0
                 ? _messageBuffer.substring(
-                    0, _messageBuffer.length - backspacesCounter)
+                0, _messageBuffer.length - backspacesCounter)
                 : _messageBuffer + dataString.substring(0, index),
           ),
         );
@@ -427,7 +409,7 @@ class _ChatPage extends State<ChatPage> {
     } else {
       _messageBuffer = (backspacesCounter > 0
           ? _messageBuffer.substring(
-              0, _messageBuffer.length - backspacesCounter)
+          0, _messageBuffer.length - backspacesCounter)
           : _messageBuffer + dataString);
     }
   }

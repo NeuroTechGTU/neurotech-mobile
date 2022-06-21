@@ -282,12 +282,12 @@ class _DropDownDemoState extends State<DropDownDemo> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  print("filminAdi " + filminAdi!);
-                  print("filminTuru " + filminTuru!);
-                  if (isChecked &&
-                      filminAdi != null &&
-                      filminAdi!.isNotEmpty &&
-                      turSecildi) {
+                  print("bassana");
+                  //print("filminAdi " + filminAdi!);
+                  //print("filminTuru " + filminTuru!);
+                  if (isChecked
+                      //filminAdi != null &&
+                      /*filminAdi!.isNotEmpty*/) {
                     final BluetoothDevice? selectedDevice =
                         await Navigator.of(context).push(
                       MaterialPageRoute(

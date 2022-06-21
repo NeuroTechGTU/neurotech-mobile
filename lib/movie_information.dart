@@ -20,7 +20,7 @@ class DropDownDemo extends StatefulWidget {
 
 String? filminAdi;
 String? filminTuru;
-TextEditingController _controller = TextEditingController();
+late TextEditingController _controller;
 void autoFill(String name) {
   _controller.text = name;
 }
@@ -56,6 +56,7 @@ class _DropDownDemoState extends State<DropDownDemo> {
   bool _autoAcceptPairingRequests = false;
   @override
   void initState() {
+    _controller = TextEditingController();
     super.initState();
     FlutterBluetoothSerial.instance.state.then((state) {
       setState(() {
@@ -101,7 +102,7 @@ class _DropDownDemoState extends State<DropDownDemo> {
     FlutterBluetoothSerial.instance.setPairingRequestHandler(null);
     //_collectingTask?.dispose();
     _discoverableTimeoutTimer?.cancel();
-    //_controller.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -283,6 +284,7 @@ class _DropDownDemoState extends State<DropDownDemo> {
               ElevatedButton(
                 onPressed: () async {
                   print("bassana");
+                  filminAdi = _controller.text;
                   //print("filminAdi " + filminAdi!);
                   //print("filminTuru " + filminTuru!);
                   if (isChecked

@@ -8,6 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:http/http.dart' as http;
 import 'package:neurotech_ceng/main.dart';
+/*
+int anger = 1;
+int antipaty = 0;
+int disgust = 2;
+int fear = 3;
+int joy = 5;
+int sad = 0;*/
+/*surprise
+trust*/
 
 List<int> datasResult = [];
 List<int> data1 = [];
@@ -46,6 +55,7 @@ Timer? _timer;
 int _start = 10;
 
 bool isStopped = false;
+bool lastZubulic = false;
 getData() async {
   Timer.periodic(Duration(seconds: 10), (timer) async {
     print("every ten seconds you should see me");
@@ -107,23 +117,30 @@ getData() async {
 
     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA sena\n");
-   // print(jsonDecode(response.body));
-    String  pdfText= await json.decode(json.encode(response.body))  ;
+    // print(jsonDecode(response.body));
+    String pdfText = await json.decode(json.encode(response.body));
+    //print(pdfText);
+    String sub = pdfText.substring(2, pdfText.length - 2);
+    print(sub);
+    List<String> strList = sub.split(" ");
+    for (int i = 0; i < strList.length; i++) {
+      lastZubulic = true;
+      if (strList[i].isEmpty || strList[i][0] != '0') {
+        strList.removeAt(i);
+        i--;
+      }
+    }
+    print(strList.toString());
 
-    var datelist = pdfText.split("  ");
-    var datelist2 = datelist[4].split(" ");
-    var datelist3 = datelist[5].split(" ");
-    var datelist4 = datelist[0].split("[[");
-    var datelist5 = datelist3[1].split("]");
-    print(datelist4[1]);
-    print(datelist[1]);
-    print(datelist[2]);
-    print(datelist[3]);
-    print(datelist2[0]);
-    print(datelist2[1]);
-    print(datelist3[0]);
-    print(datelist5[0]);
-   // print(pdfText.split(" "));
+    for (int i = 0; i < signals.length; i++) {
+      signals[i] += double.parse(strList[i]);
+    }
+
+    print("bbbbbbbbbbbbbbb");
+    print("bbbbbbbbbbbbbbb");
+    print(signals.toString());
+    print("bbbbbbbbbbbbbbb");
+    print("bbbbbbbbbbbbbbb");
 
     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
@@ -169,23 +186,23 @@ class _ChatPage extends State<ChatPage> {
       .where('email', isEqualTo: user?.email)
       .get()
       .then((snapshot) => snapshot.docs.forEach((document) {
-    age = document.data()['yas'];
-    height = document.data()['boy'];
-    sex = (document.data()['cinsiyet'][0] == 'E') ? 0 : 1;
-    weight = document.data()['kilo'];
-    /*print(sex +
+            age = document.data()['yas'];
+            height = document.data()['boy'];
+            sex = (document.data()['cinsiyet'][0] == 'E') ? 0 : 1;
+            weight = document.data()['kilo'];
+            /*print(sex +
                                     age.toString() +
                                     " " +
                                     weight.toString() +
                                     " " +
                                     height.toString());*/
-  }));
+          }));
 
   List<_Message> messages = List<_Message>.empty(growable: true);
   String _messageBuffer = '';
 
   final TextEditingController textEditingController =
-  new TextEditingController();
+      new TextEditingController();
   final ScrollController listScrollController = new ScrollController();
 
   bool isConnecting = true;
@@ -248,7 +265,7 @@ class _ChatPage extends State<ChatPage> {
         children: <Widget>[
           Container(
             child: Text(
-                    (text) {
+                (text) {
                   return text == '/shrug' ? '¯\\_(ツ)_/¯' : text;
                 }(_message.text.trim()),
                 style: TextStyle(color: Colors.white)),
@@ -257,7 +274,7 @@ class _ChatPage extends State<ChatPage> {
             width: 222.0,
             decoration: BoxDecoration(
                 color:
-                _message.whom == clientID ? Colors.blueAccent : Colors.grey,
+                    _message.whom == clientID ? Colors.blueAccent : Colors.grey,
                 borderRadius: BorderRadius.circular(7.0)),
           ),
         ],
@@ -269,82 +286,44 @@ class _ChatPage extends State<ChatPage> {
 
     final serverName = widget.server.name ?? "Unknown";
     return Scaffold(
+      backgroundColor: Color(0xff202b3c),
       appBar: AppBar(
-          title: (isConnecting
+        title: Text('NeuroTech'),
+        /*title: (isConnecting
               ? Text('Connecting chat to ' + serverName + '...')
               : isConnected
-              ? Text('Live chat with ' + serverName)
-              : Text('Chat log with ' + serverName))),
+                  ? Text('Live chat with ' + serverName)
+                  : Text('Chat log with ' + serverName))),*/
+        backgroundColor: Color(0xff1E293B),
+      ),
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Flexible(
-              child: ListView(
-                  padding: const EdgeInsets.all(12.0),
-                  controller: listScrollController,
-                  children: list),
+        child: Center(
+          child: ElevatedButton(
+            onPressed: () {
+              if (lastZubulic) {
+                lastZubulic = !lastZubulic;
+                print("Testi Bitir");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PieChart()),
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              primary: Colors.teal.shade600,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25),
+              ),
+              elevation: 4.0,
             ),
-            /*ElevatedButton(
-                onPressed: () {
-                  print("test bitir");
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => anlikChart()),
-                  );
-                  // saveTestResult(chosenValue!, filminAdi!, /*sonuc*/) // TODO: BURAYI ACCCC
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.teal.shade600,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  elevation: 4.0,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Text(
-                    'Testi Bitir',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-              ),*/
-            /* ListView(
-                  padding: const EdgeInsets.all(12.0),
-                  controller: listScrollController,
-                  children: N/*list*/),*/
-
-            Row(
-              children: <Widget>[
-                Flexible(
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 16.0),
-                    child: TextField(
-                      style: const TextStyle(fontSize: 15.0),
-                      controller: textEditingController,
-                      decoration: InputDecoration.collapsed(
-                        hintText: isConnecting
-                            ? 'Wait until connected...'
-                            : isConnected
-                            ? 'Type your message...'
-                            : 'Chat got disconnected',
-                        hintStyle: const TextStyle(color: Colors.grey),
-                      ),
-                      enabled: isConnected,
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(8.0),
-                  child: IconButton(
-                      icon: const Icon(Icons.send),
-                      onPressed: isConnected
-                          ? () => _sendMessage(textEditingController.text)
-                          : null),
-                ),
-              ],
-            )
-          ],
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Text(
+                'Testi Bitir',
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -395,12 +374,15 @@ class _ChatPage extends State<ChatPage> {
           flag++;
         });
         print(data1.toString());
+        print(data2.toString());
+        print(data3.toString());
+        print(data4.toString());
         messages.add(
           _Message(
             1,
             backspacesCounter > 0
                 ? _messageBuffer.substring(
-                0, _messageBuffer.length - backspacesCounter)
+                    0, _messageBuffer.length - backspacesCounter)
                 : _messageBuffer + dataString.substring(0, index),
           ),
         );
@@ -409,7 +391,7 @@ class _ChatPage extends State<ChatPage> {
     } else {
       _messageBuffer = (backspacesCounter > 0
           ? _messageBuffer.substring(
-          0, _messageBuffer.length - backspacesCounter)
+              0, _messageBuffer.length - backspacesCounter)
           : _messageBuffer + dataString);
     }
   }

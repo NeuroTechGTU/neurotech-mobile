@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -134,6 +135,7 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Welcome to Flutter',
       home: Scaffold(
         appBar: AppBar(
@@ -270,6 +272,7 @@ class MainPage1 extends StatelessWidget {
       ),
     );*/
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Container(
         /*
         decoration: BoxDecoration(
@@ -302,12 +305,19 @@ class MainPage1 extends StatelessWidget {
                       //backgroundColor: Color(0xff06D6A0),
                     ),
                     onPressed: () {},
-                    child: const Text('NeuroTech',
-                        style: TextStyle(color: Color(0xffe76f51), fontSize: 16)
-                        // GoogleFonts.lemon(color: Color(0xffe76f51), fontSize: 16),
-                        //GoogleFonts.lemon(color: Colors.white, fontSize: 15),
-                        //TextStyle(height: 5, fontSize: 20),
-                        )),
+                    child: Text(
+                      'NeuroTech',
+                      /*style: TextStyle(color: Color(0xffe76f51), fontSize: 28)*/
+                      style: GoogleFonts.lemon(
+                        color: Color(0xffe76f51),
+                        fontSize: 34,
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      // GoogleFonts.lemon(color: Color(0xffe76f51), fontSize: 16),
+                      //GoogleFonts.lemon(color: Colors.white, fontSize: 15),
+                      //TextStyle(height: 5, fontSize: 20),
+                    )),
                 /*Wrap(
                   alignment: WrapAlignment.center,
                   children: [
@@ -357,7 +367,7 @@ class MainPage1 extends StatelessWidget {
                         );*/
                       },
                     ),
-                    ElevatedButton(
+                    /*ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(24)),
@@ -389,7 +399,7 @@ class MainPage1 extends StatelessWidget {
                           MaterialPageRoute(builder: (context) => Anasayfa()),
                         );
                       },
-                    ),
+                    ),*/
                   ],
                 ),
               ],
